@@ -62,8 +62,8 @@ async def merge(ctx, link):
 
 @bot.command()
 @commands.is_owner()
-async def shutdown(ctx):
-    """Shutdown the bot duh"""
+async def restart(ctx):
+    """Restart the bot duh!"""
     await ctx.bot.logout()
 
 bot.run("ODYzMjU4NDk1ODcyOTI1NzI2.YOkSHw.HlhLGdUwBCKmDmBJ9tPpUudRFpY")
