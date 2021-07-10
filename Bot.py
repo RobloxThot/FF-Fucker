@@ -66,8 +66,4 @@ async def shutdown(ctx):
     """Shutdown the bot duh"""
     await ctx.bot.logout()
 
-@bot.command()
-async def commandName(ctx):
-    await bot.send_message(ctx.message.author, "fuck off")
-
 bot.run("ODYzMjU4NDk1ODcyOTI1NzI2.YOkSHw.HlhLGdUwBCKmDmBJ9tPpUudRFpY")
