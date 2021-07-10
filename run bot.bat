@@ -1,7 +1,7 @@
 @echo off
 title Discord virus bot
-cls
 
 :start
+cls
 python Bot.py
 goto start
