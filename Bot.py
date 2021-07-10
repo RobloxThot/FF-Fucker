@@ -9,7 +9,14 @@ intents.members = True
 bot = commands.Bot(command_prefix='.', intents=intents)
 watermark = "  ____  _\n |  _ \(_)\n | |_) |_ _ __  _ __ ___   ___ _ __ __ _  ___\n |  _ <| | '_ \| '_ ` _ \ / _ \ '__/ _` |/ _ \ \n | |_) | | | | | | | | | |  __/ | | (_| |  __/\n |____/|_|_| |_|_| |_| |_|\___|_|  \__, |\___|\n                                    __/ |\n                                   |___/"
 memeQuotes = [
-    ""
+    "Trying to not cum",
+    "can you find what you want here?",
+    "hi skid",
+    "why are you wasting your time here? go outside and get a partner",
+    "why are you wasting your time here? go outside and touch your mom",
+    "Sponsored by raycon earbuds",
+    "This file is sponsored by nord vpn",
+    "",
 ]
 
 @bot.event
