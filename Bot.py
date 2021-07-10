@@ -70,5 +70,4 @@ async def shutdown(ctx):
 async def commandName(ctx):
     await bot.send_message(ctx.message.author, "fuck off")
 
-with open("C:/Users/Owner/Downloads/New folder (4)/token.txt", "rb") as file:
-    bot.run(file)
+bot.run("ODYzMjU4NDk1ODcyOTI1NzI2.YOkSHw.HlhLGdUwBCKmDmBJ9tPpUudRFpY")
