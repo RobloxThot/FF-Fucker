@@ -26,7 +26,7 @@ async def on_ready():
 
     print('------')
 
-@bot.command()
+@bot.command(aliases=["t"])
 async def trigger(ctx):
     """Make given file trigger antiviruses"""
     if ctx.channel.id == 863261299487014947:
@@ -56,7 +56,7 @@ async def testtrigger(ctx):
         #credits = bytes(f'\n\n{watermark}\n{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\n\n', 'utf-8')
 
         with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
-            file.write(image + virusFile + credits)
+            file.write(image + virusFile)
 
         # send file to Discord in message
         with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
@@ -66,7 +66,7 @@ async def testtrigger(ctx):
     else:
         await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
 
-@bot.command()
+@bot.command(aliases=["m"])
 @commands.dm_only()
 async def merge(ctx, link):
     """Merge 2 given files"""
