@@ -45,17 +45,18 @@ async def trigger(ctx):
     else:
         await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
 
-@bot.command()
+@bot.command(aliases=["tt"])
 @commands.is_owner()
 async def testtrigger(ctx):
     """Make given file trigger antiviruses"""
     if ctx.channel.id == 863261299487014947:
         image = requests.get(ctx.message.attachments[0].url).content
-        virusFile = open("virus.zip", 'rb').read()
-        credits = bytes(f'\n\n{watermark}\n{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\n\n', 'utf-8')
+        virusFile = open("virus2.zip", 'rb').read()
+        credits = bytes(f'\n{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\n\n', 'utf-8')
+        #credits = bytes(f'\n\n{watermark}\n{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\n\n', 'utf-8')
 
         with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
-            file.write(image + virusFile)
+            file.write(image + virusFile + credits)
 
         # send file to Discord in message
         with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
