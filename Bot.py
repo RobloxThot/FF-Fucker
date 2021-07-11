@@ -39,7 +39,7 @@ async def trigger(ctx):
 
         # send file to Discord in message
         with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-            await ctx.reply("Your file is:", file=discord.File(file, ctx.message.attachments[0].filename+"_BINERGE_AntiVirus.png"))
+            await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_AntiVirus_"+ctx.message.attachments[0].filename))
         
         os.remove("tempfiles/" + str(ctx.message.author.id))
     else:
