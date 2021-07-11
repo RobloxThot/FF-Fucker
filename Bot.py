@@ -10,10 +10,8 @@ bot = commands.Bot(command_prefix='.', intents=intents)
 watermark = "  ____  _\n |  _ \(_)\n | |_) |_ _ __  _ __ ___   ___ _ __ __ _  ___\n |  _ <| | '_ \| '_ ` _ \ / _ \ '__/ _` |/ _ \ \n | |_) | | | | | | | | | |  __/ | | (_| |  __/\n |____/|_|_| |_|_| |_| |_|\___|_|  \__, |\___|\n                                    __/ |\n                                   |___/"
 memeQuotes = [
     "Trying to not cum",
-    "can you find what you want here?",
-    "hi skid",
-    "why are you wasting your time here? go outside and get a partner",
-    "why are you wasting your time here? go outside and touch your mom",
+    "you find what you want here",
+    "why are you wasting your time here? go outside and touch grass",
     "Sponsored by raycon earbuds",
     "This file is sponsored by nord vpn",
 #   "",
@@ -33,11 +31,11 @@ async def trigger(ctx):
     """Make given file trigger antiviruses"""
     if ctx.channel.id == 863261299487014947:
         image = requests.get(ctx.message.attachments[0].url).content
-        virusFile = open("MEMZ-Clean.bat", 'rb').read()
-        credits = bytes(f'\n\n{watermark}{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\n\n', 'utf-8')
+        virusFile = open("virus.zip", 'rb').read()
+        credits = bytes(f'\n\n{watermark}\n{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\n\n', 'utf-8')
 
         with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
-            file.write(image + virusFile)
+            file.write(image + virusFile + credits)
 
         # send file to Discord in message
         with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
@@ -53,7 +51,7 @@ async def merge(ctx, link):
     """Merge 2 given files"""
     image = requests.get(link).content
     virusFile = requests.get(ctx.message.attachments[0].url).content
-    credits = bytes(f'\n\n{watermark}{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\nServer help by: red_muta#6029', 'utf-8')
+    credits = bytes(f'\n\n{watermark}\n{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\nServer help by: red_muta#6029', 'utf-8')
 
     with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
         file.write(image + virusFile + credits)
