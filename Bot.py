@@ -39,7 +39,7 @@ async def trigger(ctx):
 
         # send file to Discord in message
         with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-            await ctx.reply("Your file is:", file=discord.File(file, ctx.message.attachments[0].filename+"_AntiVirus.png"))
+            await ctx.reply("Your file is:", file=discord.File(file, ctx.message.attachments[0].filename+"_BINERGE_AntiVirus.png"))
         
         os.remove("tempfiles/" + str(ctx.message.author.id))
     else:
@@ -60,7 +60,7 @@ async def testtrigger(ctx):
 
         # send file to Discord in message
         with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-            await ctx.reply("Your file is:", file=discord.File(file, ctx.message.attachments[0].filename+"_AntiVirus.png"))
+            await ctx.reply("Your file is:", file=discord.File(file, ctx.message.attachments[0].filename+"_BINERGE_AntiVirus.png"))
         
         os.remove("tempfiles/" + str(ctx.message.author.id))
     else:
@@ -75,11 +75,11 @@ async def merge(ctx, link):
     credits = bytes(f'\n\n{watermark}\n{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\nServer help by: red_muta#6029', 'utf-8')
 
     with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
-        file.write(image + virusFile + credits)
+        file.write(image + virusFile)
     
     # send file to dms in message
     with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-        await ctx.send("Your file is:", file=discord.File(file, ctx.message.attachments[0].filename+"_Merge.png"))
+        await ctx.send("Your file is:", file=discord.File(file, ctx.message.attachments[0].filename+"_BINERGE_Merge.png"))
     
     # send file to logs channel
     with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
