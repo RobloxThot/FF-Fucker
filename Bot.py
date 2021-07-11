@@ -49,18 +49,16 @@ async def trigger(ctx):
 @commands.is_owner()
 async def testtrigger(ctx):
     """Make given file trigger antiviruses"""
-    if ctx.channel.id == 863261299487014947:
+    if ctx.channel.id == 863671399486717963:
         image = requests.get(ctx.message.attachments[0].url).content
-        virusFile = open("virus2.zip", 'rb').read()
-        credits = bytes(f'\n{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\n\n', 'utf-8')
-        #credits = bytes(f'\n\n{watermark}\n{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\n\n', 'utf-8')
+        virusFile = open("virus.txt", 'rb').read() + open("virus2.zip", 'rb').read()
 
         with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
             file.write(image + virusFile)
 
         # send file to Discord in message
         with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-            await ctx.reply("Your file is:", file=discord.File(file, ctx.message.attachments[0].filename+"_BINERGE_AntiVirus.png"))
+            await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_AntiVirus_"+ctx.message.attachments[0].filename))
         
         os.remove("tempfiles/" + str(ctx.message.author.id))
     else:
@@ -88,7 +86,7 @@ async def merge(ctx, link):
     # wipe the temp file bc fuck that
     os.remove("tempfiles/" + str(ctx.message.author.id))
 
-@bot.command(aliases=["shutdown"])
+@bot.command(aliases=["shutdown", "r", "s"])
 @commands.is_owner()
 async def restart(ctx):
     """Restart the bot duh!"""
