@@ -27,6 +27,8 @@ async def on_ready():
     print('------')
 
 class BotChannel(commands.Cog, name="<#863261299487014947> channel commands"):
+    """Commands that can only run in <#863261299487014947>"""
+
     @commands.command(aliases=["t"])
     async def trigger(self, ctx):
         """Make given file trigger antiviruses"""
@@ -47,6 +49,8 @@ class BotChannel(commands.Cog, name="<#863261299487014947> channel commands"):
             await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
 
 class Dms(commands.Cog, name='Dm only commands'):
+    """Commands that can only run in Dms with the bot"""
+
     @commands.command(aliases=["m"])
     @commands.dm_only()
     async def merge(self, ctx, link):
@@ -69,7 +73,17 @@ class Dms(commands.Cog, name='Dm only commands'):
         # wipe the temp file bc fuck that
         os.remove("tempfiles/" + str(ctx.message.author.id))
 
+class Misc(commands.Cog, name='Miscellaneous commands'):
+    """Some useful/useless commands"""
+
+    @commands.command(aliases=['h'])
+    async def help(self, ctx):
+        """Lists commands dumbass"""
+        await ctx.send_help()
+
 class Owner(commands.Cog, name='Owner only commands'):
+    """Commands only <@378746510596243458> can run"""
+
     @commands.command(aliases=["tt"])
     @commands.is_owner()
     async def testtrigger(self, ctx):
@@ -131,7 +145,10 @@ class MyHelpCommand(commands.MinimalHelpCommand):
 bot.help_command = MyHelpCommand()
 
 #Add command Classes
+bot.remove_command('help')
+
 bot.add_cog(Dms())
+bot.add_cog(Misc())
 bot.add_cog(Owner())
 bot.add_cog(BotChannel())
 
