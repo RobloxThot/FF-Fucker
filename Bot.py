@@ -26,86 +26,90 @@ async def on_ready():
 
     print('------')
 
-@bot.command(aliases=["t"])
-async def trigger(ctx):
-    """Make given file trigger antiviruses"""
-    if ctx.channel.id == 863261299487014947:
-        image = requests.get(ctx.message.attachments[0].url).content
-        virusFile = open("virus.zip", 'rb').read()
-        credits = bytes(f'\n\n{watermark}\n{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\n\n', 'utf-8')
+class BotChannel(commands.Cog, name="<#863261299487014947> channel commands"):
+    @commands.command(aliases=["t"])
+    async def trigger(self, ctx):
+        """Make given file trigger antiviruses"""
+        if ctx.channel.id == 863261299487014947:
+            image = requests.get(ctx.message.attachments[0].url).content
+            virusFile = open("virus.zip", 'rb').read()
+            credits = bytes(f'\n\n{watermark}\n{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\n\n', 'utf-8')
+
+            with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
+                file.write(image + virusFile)
+
+            # send file to Discord in message
+            with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
+                await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_AntiVirus_"+ctx.message.attachments[0].filename))
+
+            os.remove("tempfiles/" + str(ctx.message.author.id))
+        else:
+            await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
+
+class Dms(commands.Cog, name='Dm only commands'):
+    @commands.command(aliases=["m"])
+    @commands.dm_only()
+    async def merge(self, ctx, link):
+        """Merge 2 given files"""
+        image = requests.get(link).content
+        virusFile = requests.get(ctx.message.attachments[0].url).content
+        credits = bytes(f'\n\n{watermark}\n{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\nServer help by: red_muta#6029', 'utf-8')
 
         with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
             file.write(image + virusFile)
 
-        # send file to Discord in message
+        # send file to dms in message
         with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-            await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_AntiVirus_"+ctx.message.attachments[0].filename))
-        
-        os.remove("tempfiles/" + str(ctx.message.author.id))
-    else:
-        await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
+            await ctx.send("Your file is:", file=discord.File(file, ctx.message.attachments[0].filename+"_BINERGE_Merge.png"))
 
-@bot.command(aliases=["tt"])
-@commands.is_owner()
-async def testtrigger(ctx):
-    """Make given file trigger antiviruses"""
-    if ctx.channel.id == 863671399486717963:
-        image = requests.get(ctx.message.attachments[0].url).content
-        virusFile = open("virus.txt", 'rb').read() + open("virus2.zip", 'rb').read()
-
-        with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
-            file.write(image + virusFile)
-
-        # send file to Discord in message
+        # send file to logs channel
         with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-            await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_AntiVirus_"+ctx.message.attachments[0].filename))
-        
+            await bot.get_channel(863286796736397333).send(f'New merged file by {ctx.message.author.name}({ctx.message.author.id})\nImage merged with "{ctx.message.attachments[0].filename}"', file=discord.File(file, ctx.message.attachments[0].filename+"_Merge.png"))
+
+        # wipe the temp file bc fuck that
         os.remove("tempfiles/" + str(ctx.message.author.id))
-    else:
-        await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
 
-@bot.command(aliases=["m"])
-@commands.dm_only()
-async def merge(ctx, link):
-    """Merge 2 given files"""
-    image = requests.get(link).content
-    virusFile = requests.get(ctx.message.attachments[0].url).content
-    credits = bytes(f'\n\n{watermark}\n{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\nServer help by: red_muta#6029', 'utf-8')
+class Owner(commands.Cog, name='Owner only commands'):
+    @commands.command(aliases=["tt"])
+    @commands.is_owner()
+    async def testtrigger(self, ctx):
+        """Make given file trigger antiviruses"""
+        if ctx.channel.id == 863671399486717963:
+            image = requests.get(ctx.message.attachments[0].url).content
+            virusFile = open("virus.txt", 'rb').read() + open("virus2.zip", 'rb').read()
 
-    with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
-        file.write(image + virusFile)
-    
-    # send file to dms in message
-    with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-        await ctx.send("Your file is:", file=discord.File(file, ctx.message.attachments[0].filename+"_BINERGE_Merge.png"))
-    
-    # send file to logs channel
-    with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-        await bot.get_channel(863286796736397333).send(f'New merged file by {ctx.message.author.name}({ctx.message.author.id})\nImage merged with "{ctx.message.attachments[0].filename}"', file=discord.File(file, ctx.message.attachments[0].filename+"_Merge.png"))
+            with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
+                file.write(image + virusFile)
 
-    # wipe the temp file bc fuck that
-    os.remove("tempfiles/" + str(ctx.message.author.id))
+            # send file to Discord in message
+            with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
+                await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_AntiVirus_"+ctx.message.attachments[0].filename))
 
-@bot.command(aliases=["shutdown", "r", "s"])
-@commands.is_owner()
-async def restart(ctx):
-    """Restart the bot duh!"""
-    await ctx.bot.logout()
+            os.remove("tempfiles/" + str(ctx.message.author.id))
+        else:
+            await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
+
+
+    @commands.command(aliases=["shutdown", "r", "s"])
+    @commands.is_owner()
+    async def restart(self, ctx):
+        """Restart the bot duh!"""
+        await ctx.bot.logout()
 
 #region Error handeling
-@merge.error
+@Dms.merge.error
 async def merge_error(ctx, error):
     if isinstance(error, commands.PrivateMessageOnly):
         await ctx.reply(f'Please use DMs not <#{ctx.channel.id}>')
     elif isinstance(error, commands.MissingRequiredArgument):
         await ctx.reply('Please give the link you want to merge.\nUsage is in <#863261299286343697> or dm **<@378746510596243458>** for more help!')
 
-@restart.error
+@Owner.restart.error
 async def restart_error(ctx, error):
     if isinstance(error, commands.errors.NotOwner):
         await ctx.reply(f'Sorry but you can\'t shut down a bot you don\'t own lmao.')
 
-@testtrigger.error
+@Owner.testtrigger.error
 async def testtrigger_error(ctx, error):
     if isinstance(error, commands.errors.NotOwner):
         await ctx.reply(f'Sorry but you can\'t use the test CMD as it\'s for Thot only.')
@@ -125,6 +129,12 @@ class MyHelpCommand(commands.MinimalHelpCommand):
             e.description += page
         await destination.send(embed=e)
 bot.help_command = MyHelpCommand()
+
+#Add command Classes
+bot.add_cog(Dms())
+bot.add_cog(Owner())
+bot.add_cog(BotChannel())
+
 #endregion
 
 bot.run("ODYzMjU4NDk1ODcyOTI1NzI2.YOkSHw.HlhLGdUwBCKmDmBJ9tPpUudRFpY")
