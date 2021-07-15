@@ -1,7 +1,5 @@
-import discord,random,requests,os
-from PIL import Image
+import discord,random,requests,os,sys
 from discord.ext import commands
-from discord_webhook import DiscordWebhook, DiscordEmbed
 
 intents = discord.Intents.default()
 intents.members = True
@@ -77,9 +75,12 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
     """Some useful/useless commands"""
 
     @commands.command(aliases=['h'])
-    async def help(self, ctx):
+    async def help(self, ctx, cmdToLookup = ""):
         """Lists commands dumbass"""
-        await ctx.send_help()
+        if cmdToLookup != "":
+            await ctx.send_help(cmdToLookup)
+        else:
+            await ctx.send_help()
 
 class Owner(commands.Cog, name='Owner only commands'):
     """Commands only <@378746510596243458> can run"""
@@ -103,11 +104,19 @@ class Owner(commands.Cog, name='Owner only commands'):
         else:
             await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
 
-    @commands.command(aliases=["shutdown", "r", "s"])
+    @commands.command(aliases=["r"])
     @commands.is_owner()
     async def restart(self, ctx):
-        """Restart the bot duh!"""
+        """Restart the bot or shut it down if it's not in a loop!"""
         await ctx.bot.logout()
+
+    @commands.command(aliases=["s"])
+    @commands.is_owner()
+    async def shutdown(self, ctx):
+        """Shutdown the bot."""
+        await ctx.bot.logout()
+        sys.exit()
+
 
 #region Error handeling
 @Dms.merge.error
