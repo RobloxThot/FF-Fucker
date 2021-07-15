@@ -116,4 +116,15 @@ async def on_command_error(ctx, error):
         await ctx.reply("That command wasn't found! Sorry :(")
 #endregion
 
+#region Setup classes for the bot
+class MyHelpCommand(commands.MinimalHelpCommand):
+    async def send_pages(self):
+        destination = self.get_destination()
+        e = discord.Embed(color=discord.Color.blurple(), description='```fix\n ____  _\n|  _ \(_) \n| |_) |_ _ __  _ __ ___   ___ _ __ __ _  ___\n|  _ <| | \'_ \| \'_ ` _ \ / _ \ \'__/ _` |/ _ \ \n| |_) | | | | | | | | | |  __/ | | (_| |  __/\n|____/|_|_| |_|_| |_| |_|\___|_|  \__, |\___|\n                                   __/ |\n                                  |___/```')
+        for page in self.paginator.pages:
+            e.description += page
+        await destination.send(embed=e)
+bot.help_command = MyHelpCommand()
+#endregion
+
 bot.run("ODYzMjU4NDk1ODcyOTI1NzI2.YOkSHw.HlhLGdUwBCKmDmBJ9tPpUudRFpY")
