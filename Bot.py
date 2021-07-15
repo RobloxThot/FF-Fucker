@@ -103,7 +103,6 @@ class Owner(commands.Cog, name='Owner only commands'):
         else:
             await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
 
-
     @commands.command(aliases=["shutdown", "r", "s"])
     @commands.is_owner()
     async def restart(self, ctx):
