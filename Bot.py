@@ -51,9 +51,9 @@ class Dms(commands.Cog, name='Dm only commands'):
 
     @commands.command(aliases=["m"])
     @commands.dm_only()
-    async def merge(self, ctx, VideoOrImage):
+    async def merge(self, ctx, videoOrImage, fileType = "PNG"):
         """Merge 2 given files"""
-        image = requests.get(VideoOrImage).content
+        image = requests.get(videoOrImage).content
         virusFile = requests.get(ctx.message.attachments[0].url).content
         credits = bytes(f'\n\n{watermark}\n{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\nServer help by: red_muta#6029', 'utf-8')
 
@@ -62,11 +62,11 @@ class Dms(commands.Cog, name='Dm only commands'):
 
         # send file to dms in message
         with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-            await ctx.send("Your file is:", file=discord.File(file, "BINERGE_Merge_"+ctx.message.attachments[0].filename))
+            await ctx.send("Your file is:", file=discord.File(file, "BINERGE_Merge_"+ctx.message.attachments[0].filename + fileType))
 
         # send file to logs channel
         with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-            await bot.get_channel(863286796736397333).send(f'New merged file by {ctx.message.author.name}(https://www.discord.com/users/{ctx.message.author.id})\nImage merged with "{ctx.message.attachments[0].filename}"', file=discord.File(file, "BINERGE_Merge_"+ctx.message.attachments[0].filename))
+            await bot.get_channel(863286796736397333).send(f'New merged file by {ctx.message.author.name}(https://www.discord.com/users/{ctx.message.author.id})\nImage merged with "{ctx.message.attachments[0].filename}"', file=discord.File(file, "BINERGE_Merge_"+ctx.message.attachments[0].filename + fileType))
 
         # wipe the temp file bc fuck that
         os.remove("tempfiles/" + str(ctx.message.author.id))
