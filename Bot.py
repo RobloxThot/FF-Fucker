@@ -7,7 +7,7 @@ start_time = time.time()
 intents = discord.Intents.default()
 intents.members = True
 
-bot = commands.Bot(command_prefix='.', intents=intents)
+bot = commands.Bot(command_prefix='.', intents=intents, case_insensitive=True)
 watermark = "  ____  _\n |  _ \(_)\n | |_) |_ _ __  _ __ ___   ___ _ __ __ _  ___\n |  _ <| | '_ \| '_ ` _ \ / _ \ '__/ _` |/ _ \ \n | |_) | | | | | | | | | |  __/ | | (_| |  __/\n |____/|_|_| |_|_| |_| |_|\___|_|  \__, |\___|\n                                    __/ |\n                                   |___/"
 memeQuotes = [
     "Trying to not cum",
@@ -106,6 +106,16 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
 
     @commands.command(aliases=["d"])
     async def Download(self, ctx, link):
+        statusMsg = await ctx.reply(f'Downloading video please wait!', mention_author=False)
+        YouTube(link).streams.first().download(output_path = "video", filename=str(ctx.message.author.id))
+        await statusMsg.edit(content=f'Sending video please wait!')
+        with open("video/" + str(ctx.message.author.id) + ".mp4", "rb") as file:
+            await ctx.reply("Your file is:", file=discord.File(file, f'{YouTube(link).title}.mp4'))
+        await statusMsg.delete()
+        os.remove("video/" + str(ctx.message.author.id) + ".mp4")
+
+    @commands.command(aliases=["d3"])
+    async def DownloadMp3(self, ctx, link):
         statusMsg = await ctx.reply(f'Downloading video please wait!', mention_author=False)
         YouTube(link).streams.first().download(output_path = "video", filename=str(ctx.message.author.id))
         await statusMsg.edit(content=f'Sending video please wait!')
