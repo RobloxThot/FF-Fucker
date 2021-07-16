@@ -25,6 +25,23 @@ def upTime():
     difference = int(round(current_time - start_time))
     text = str(datetime.timedelta(seconds=difference))
     return text
+
+def convert_bytes(num):
+    """
+    this function will convert bytes to MB.... GB... etc
+    """
+    for x in ['bytes', 'KB', 'MB', 'GB', 'TB']:
+        if num < 1024.0:
+            return "%3.1f %s" % (num, x)
+        num /= 1024.0
+
+def file_size(file_path):
+    """
+    this function will return the file size
+    """
+    if os.path.isfile(file_path):
+        file_info = os.stat(file_path)
+        return convert_bytes(file_info.st_size)
 #endregion
 
 class BotChannel(commands.Cog, name="<#863261299487014947> channel commands"):
@@ -98,19 +115,19 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
     async def Download(self, ctx, link):
         statusMsg = await ctx.reply(f'Downloading video please wait!', mention_author=False)
         YouTube(link).streams.first().download(output_path = "video", filename=str(ctx.message.author.id))
-        await statusMsg.edit(content=f'Sending video please wait!')
+        await statusMsg.edit(content=f'Sending video please wait!\nFile size: {file_size("video/" + str(ctx.message.author.id) + ".mp4")}')
         with open("video/" + str(ctx.message.author.id) + ".mp4", "rb") as file:
-            await ctx.reply("Your file is:", file=discord.File(file, f'{YouTube(link).title}.mp4'))
+            await ctx.reply(f'Your file is:', file=discord.File(file, f'{YouTube(link).title}.mp4'))
         await statusMsg.delete()
         os.remove("video/" + str(ctx.message.author.id) + ".mp4")
 
     @commands.command(aliases=["d3"])
     async def DownloadMp3(self, ctx, link):
-        statusMsg = await ctx.reply(f'Downloading video please wait!', mention_author=False)
-        YouTube(link).streams.first().download(output_path = "video", filename=str(ctx.message.author.id))
-        await statusMsg.edit(content=f'Sending video please wait!')
+        statusMsg = await ctx.reply(f'Downloading audio please wait!', mention_author=False)
+        YouTube(link).streams.filter(only_audio=True).first().download(output_path = "video", filename=str(ctx.message.author.id))
+        await statusMsg.edit(content=f'Sending audio please wait!\nFile size: {file_size("video/" + str(ctx.message.author.id) + ".mp4")}')
         with open("video/" + str(ctx.message.author.id) + ".mp4", "rb") as file:
-            await ctx.reply("Your file is:", file=discord.File(file, f'{YouTube(link).title}.mp4'))
+            await ctx.reply(f'Your file is:', file=discord.File(file, f'{YouTube(link).title}.mp3'))
         await statusMsg.delete()
         os.remove("video/" + str(ctx.message.author.id) + ".mp4")
 
