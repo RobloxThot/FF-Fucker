@@ -1,6 +1,8 @@
-import discord,random,requests,os,sys
+import discord,random,requests,os,sys,time
 from discord.ext import commands
+from pytube import YouTube
 
+start_time = time.time()
 intents = discord.Intents.default()
 intents.members = True
 
@@ -116,6 +118,13 @@ class Owner(commands.Cog, name='Owner only commands'):
         """Shutdown the bot."""
         await ctx.bot.logout()
         sys.exit()
+
+    @commands.command(aliases=["d"])
+    @commands.is_owner()
+    async def Download(self, ctx, link):
+        #YouTube(link).streams.first().download(output_path = "video", filename=str(ctx.message.author.id))
+        await ctx.send(f"{bot.uptime}")
+        print(YouTube(link).streams)
 
 
 #region Error handeling
