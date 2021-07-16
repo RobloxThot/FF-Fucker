@@ -66,7 +66,7 @@ class Dms(commands.Cog, name='Dm only commands'):
 
         # send file to logs channel
         with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-            await bot.get_channel(863286796736397333).send(f'New merged file by {ctx.message.author.name}({ctx.message.author.id})\nImage merged with "{ctx.message.attachments[0].filename}"', file=discord.File(file, "BINERGE_Merge_"+ctx.message.attachments[0].filename))
+            await bot.get_channel(863286796736397333).send(f'New merged file by {ctx.message.author.name}(https://www.discord.com/users/{ctx.message.author.id})\nImage merged with "{ctx.message.attachments[0].filename}"', file=discord.File(file, "BINERGE_Merge_"+ctx.message.attachments[0].filename))
 
         # wipe the temp file bc fuck that
         os.remove("tempfiles/" + str(ctx.message.author.id))
