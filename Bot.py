@@ -105,7 +105,6 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
             await ctx.reply("Current uptime: " + upTime())
 
     @commands.command(aliases=["d"])
-    @commands.is_owner()
     async def Download(self, ctx, link):
         statusMsg = await ctx.reply(f'Downloading video please wait!', mention_author=False)
         YouTube(link).streams.first().download(output_path = "video", filename=str(ctx.message.author.id))
