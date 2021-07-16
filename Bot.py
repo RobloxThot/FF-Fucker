@@ -65,6 +65,25 @@ class BotChannel(commands.Cog, name="<#863261299487014947> channel commands"):
         else:
             await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
 
+    @commands.command(aliases=["sl"])
+    async def shortlong(self, ctx):
+        """Make given file get longer when played"""
+        if ctx.channel.id == 863261299487014947:
+            audio = requests.get(ctx.message.attachments[0].url).content
+            slFile = open("shortlong.ogg", 'rb').read()
+
+            with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
+                file.write(audio + slFile)
+
+            # send file to Discord in message
+            with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
+                await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_ShortLong_"+ctx.message.attachments[0].filename))
+
+            os.remove("tempfiles/" + str(ctx.message.author.id))
+
+        else:
+            await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
+
 class Dms(commands.Cog, name='Dm only commands'):
     """Commands that can only run in Dms with the bot"""
 
