@@ -218,29 +218,16 @@ class Owner(commands.Cog, name='Owner only commands'):
         os.remove(userDir+'.mp4')
 
 #region Error handeling
-@Dms.merge.error
-async def merge_error(ctx, error):
-    if isinstance(error, commands.PrivateMessageOnly):
-        await ctx.reply(f'Please use DMs not <#{ctx.channel.id}>')
-    elif isinstance(error, commands.MissingRequiredArgument):
-        await ctx.reply('Please give the link you want to merge.\nUsage is in <#863261299286343697> or dm **<@378746510596243458>** for more help!')
-
-@Owner.restart.error
-async def restart_error(ctx, error):
-    if isinstance(error, commands.errors.NotOwner):
-        await ctx.reply(f'Sorry but you can\'t shut down a bot you don\'t own lmao.')
-
-@Owner.testtrigger.error
-async def testtrigger_error(ctx, error):
-    if isinstance(error, commands.errors.NotOwner):
-        await ctx.reply(f'Sorry but you can\'t use the test CMD as it\'s for Thot only.')
-
 @bot.event
 async def on_command_error(ctx, error):
-    if isinstance(error, discord.ext.commands.errors.CommandNotFound):
+    if isinstance(error, commands.errors.CommandNotFound):
         await ctx.reply("That command wasn't found! Sorry :(")
-    elif isinstance(error, discord.ext.commands.errors.MissingRequiredArgument):
-        await ctx.reply("You are missing a required argument")
+    elif isinstance(error, commands.errors.MissingRequiredArgument):
+        await ctx.reply("You are missing a required argument.\nEither read <#863261299286343697> or run .help. ")
+    elif isinstance(error, commands.PrivateMessageOnly):
+        await ctx.reply(f'Please use DMs not <#{ctx.channel.id}>')
+    elif isinstance(error, commands.errors.NotOwner):
+        await ctx.reply(f'Sorry but you can\'t use admin as it\'s for Thot only.')
 #endregion
 
 #region Setup classes for the bot
