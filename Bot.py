@@ -59,8 +59,12 @@ class BotChannel(commands.Cog, name="<#863261299487014947> channel commands"):
 
             # send file to Discord in message
             with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-                await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_AntiVirus_"+ctx.message.attachments[0].filename))
-
+                await ctx.reply(
+                    "(Deleting after 1 min)\nYour file is:",
+                    file=discord.File(file, "BINERGE_AntiVirus_"+ctx.message.attachments[0].filename),
+                    delete_after=60
+                )
+            await ctx.message.delete()
             os.remove("tempfiles/" + str(ctx.message.author.id))
         else:
             await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
