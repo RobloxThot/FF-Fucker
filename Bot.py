@@ -158,10 +158,10 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
     async def glitch(self, ctx):
         """Shutdown the bot."""
         if ctx.message.attachments:
+            statusMsg = await ctx.reply(f'Downloading video please wait!', mention_author=False)
             video = requests.get(ctx.message.attachments[0].url).content
             userDir = "tempfiles/" + str(ctx.message.author.id)
             videoDir = userDir + ctx.message.attachments[0].filename
-            statusMsg = await ctx.reply(f'Downloading video please wait!', mention_author=False)
     
             with open(videoDir, "wb") as file:
                 file.write(video)
