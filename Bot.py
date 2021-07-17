@@ -219,7 +219,7 @@ class Owner(commands.Cog, name='Owner only commands'):
         await statusMsg.edit(content=f'Uploading video.\nFinal file size: {file_size(userDir+".mp4")}')
         with open(userDir+'.mp4', "rb") as file:
             await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_Glitch_"+ctx.message.attachments[0].filename))
-        statusMsg.delete()
+        await statusMsg.delete()
         os.remove(userDir+'.mp4')
 
 #region Error handeling
