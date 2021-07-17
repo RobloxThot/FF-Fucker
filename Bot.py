@@ -204,7 +204,7 @@ class Owner(commands.Cog, name='Owner only commands'):
             pass
 
         os.remove(videoDir)
-        
+
         try:
             stream2 = ffmpeg.input(userDir+'.ogg')
             stream2 = ffmpeg.output(stream2, userDir+'.mp4')
@@ -239,6 +239,8 @@ async def testtrigger_error(ctx, error):
 async def on_command_error(ctx, error):
     if isinstance(error, discord.ext.commands.errors.CommandNotFound):
         await ctx.reply("That command wasn't found! Sorry :(")
+    elif isinstance(error, discord.ext.commands.errors.MissingRequiredArgument):
+        await ctx.reply("You are missing a required argument")
 #endregion
 
 #region Setup classes for the bot
