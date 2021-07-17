@@ -189,38 +189,41 @@ class Owner(commands.Cog, name='Owner only commands'):
     @commands.is_owner()
     async def glitch(self, ctx):
         """Shutdown the bot."""
-        video = requests.get(ctx.message.attachments[0].url).content
-        userDir = "tempfiles/" + str(ctx.message.author.id)
-        videoDir = userDir + ctx.message.attachments[0].filename
-        statusMsg = await ctx.reply(f'Downloading video please wait!', mention_author=False)
-
-        with open(videoDir, "wb") as file:
-            file.write(video)
-        await statusMsg.edit(content=f'Making the video glitchy.\nDownloaded file size: {file_size(videoDir)}')
-
-        try:
-            stream = ffmpeg.input(videoDir)
-            stream = ffmpeg.output(stream, userDir+'.ogg')
-            ffmpeg.run(stream,quiet=True)
-        except:
-            pass
-
-        await statusMsg.edit(content=f'Making the video glitchy.\nDownloaded file size: {file_size(videoDir)}\nCorrupted file size: {file_size( userDir + ".ogg")}')
-        os.remove(videoDir)
-
-        try:
-            stream2 = ffmpeg.input(userDir+'.ogg')
-            stream2 = ffmpeg.output(stream2, userDir+'.mp4')
-            ffmpeg.run(stream2,quiet=True)
-            os.remove(userDir+'.ogg')
-        except:
-            pass
-        
-        await statusMsg.edit(content=f'Uploading video.\nFinal file size: {file_size(userDir+".mp4")}')
-        with open(userDir+'.mp4', "rb") as file:
-            await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_Glitch_"+ctx.message.attachments[0].filename))
-        await statusMsg.delete()
-        os.remove(userDir+'.mp4')
+        if ctx.message.attachments:
+            video = requests.get(ctx.message.attachments[0].url).content
+            userDir = "tempfiles/" + str(ctx.message.author.id)
+            videoDir = userDir + ctx.message.attachments[0].filename
+            statusMsg = await ctx.reply(f'Downloading video please wait!', mention_author=False)
+    
+            with open(videoDir, "wb") as file:
+                file.write(video)
+            await statusMsg.edit(content=f'Making the video glitchy.\nDownloaded file size: {file_size(videoDir)}')
+    
+            try:
+                stream = ffmpeg.input(videoDir)
+                stream = ffmpeg.output(stream, userDir+'.ogg')
+                ffmpeg.run(stream,quiet=True)
+            except:
+                pass
+    
+            await statusMsg.edit(content=f'Making the video glitchy.\nDownloaded file size: {file_size(videoDir)}\nCorrupted file size: {file_size( userDir + ".ogg")}')
+            os.remove(videoDir)
+    
+            try:
+                stream2 = ffmpeg.input(userDir+'.ogg')
+                stream2 = ffmpeg.output(stream2, userDir+'.mp4')
+                ffmpeg.run(stream2,quiet=True)
+                os.remove(userDir+'.ogg')
+            except:
+                pass
+            
+            await statusMsg.edit(content=f'Uploading video.\nFinal file size: {file_size(userDir+".mp4")}')
+            with open(userDir+'.mp4', "rb") as file:
+                await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_Glitch_"+ctx.message.attachments[0].filename))
+            await statusMsg.delete()
+            os.remove(userDir+'.mp4')
+        else:
+            ctx.reply("You must send a video.")
 
 #region Error handeling
 @bot.event
