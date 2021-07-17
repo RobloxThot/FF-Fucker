@@ -180,12 +180,14 @@ class Owner(commands.Cog, name='Owner only commands'):
     @commands.is_owner()
     async def restart(self, ctx):
         """Restart the bot or shut it down if it's not in a loop!"""
+        await ctx.message.delete()
         await ctx.bot.logout()
 
     @commands.command(aliases=["s"])
     @commands.is_owner()
     async def shutdown(self, ctx):
         """Shutdown the bot."""
+        await ctx.message.delete()
         await ctx.bot.logout()
         sys.exit()
 
