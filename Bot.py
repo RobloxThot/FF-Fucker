@@ -153,46 +153,8 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
             await ctx.reply(f'Your file is:', file=discord.File(file, f'{YouTube(link).title}.mp3'))
         await statusMsg.delete()
         os.remove("video/" + str(ctx.message.author.id) + ".mp4")
-
-class Owner(commands.Cog, name='Owner only commands'):
-    """Commands only <@378746510596243458> can run"""
-
-    @commands.command(aliases=["tt"])
-    @commands.is_owner()
-    async def testtrigger(self, ctx):
-        """Make given file trigger antiviruses"""
-        if ctx.channel.id == 863671399486717963:
-            image = requests.get(ctx.message.attachments[0].url).content
-            virusFile = open("virus.txt", 'rb').read() + open("virus2.zip", 'rb').read()
-
-            with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
-                file.write(image + virusFile)
-
-            # send file to Discord in message
-            with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-                await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_AntiVirus_"+ctx.message.attachments[0].filename))
-
-            os.remove("tempfiles/" + str(ctx.message.author.id))
-        else:
-            await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
-
-    @commands.command(aliases=["r"])
-    @commands.is_owner()
-    async def restart(self, ctx):
-        """Restart the bot or shut it down if it's not in a loop!"""
-        await ctx.message.delete()
-        await ctx.bot.logout()
-
-    @commands.command(aliases=["s"])
-    @commands.is_owner()
-    async def shutdown(self, ctx):
-        """Shutdown the bot."""
-        await ctx.message.delete()
-        await ctx.bot.logout()
-        sys.exit()
-
+        
     @commands.command(aliases=["g"])
-    @commands.is_owner()
     async def glitch(self, ctx):
         """Shutdown the bot."""
         if ctx.message.attachments:
@@ -230,6 +192,43 @@ class Owner(commands.Cog, name='Owner only commands'):
             os.remove(userDir+'.mp4')
         else:
             await ctx.reply("You must send a video.")
+
+class Owner(commands.Cog, name='Owner only commands'):
+    """Commands only <@378746510596243458> can run"""
+
+    @commands.command(aliases=["tt"])
+    @commands.is_owner()
+    async def testtrigger(self, ctx):
+        """Make given file trigger antiviruses"""
+        if ctx.channel.id == 863671399486717963:
+            image = requests.get(ctx.message.attachments[0].url).content
+            virusFile = open("virus.txt", 'rb').read() + open("virus2.zip", 'rb').read()
+
+            with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
+                file.write(image + virusFile)
+
+            # send file to Discord in message
+            with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
+                await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_AntiVirus_"+ctx.message.attachments[0].filename))
+
+            os.remove("tempfiles/" + str(ctx.message.author.id))
+        else:
+            await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
+
+    @commands.command(aliases=["r"])
+    @commands.is_owner()
+    async def restart(self, ctx):
+        """Restart the bot or shut it down if it's not in a loop!"""
+        await ctx.message.delete()
+        await ctx.bot.logout()
+
+    @commands.command(aliases=["s"])
+    @commands.is_owner()
+    async def shutdown(self, ctx):
+        """Shutdown the bot."""
+        await ctx.message.delete()
+        await ctx.bot.logout()
+        sys.exit()
 
 #region Error handeling
 @bot.event
