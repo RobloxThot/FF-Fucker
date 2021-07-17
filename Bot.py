@@ -213,7 +213,7 @@ async def on_command_error(ctx, error):
 class MyHelpCommand(commands.MinimalHelpCommand):
     async def send_pages(self):
         destination = self.get_destination()
-        e = discord.Embed(color=discord.Color.blurple(), description='```fix\n ____  _\n|  _ \(_) \n| |_) |_ _ __  _ __ ___   ___ _ __ __ _  ___\n|  _ <| | \'_ \| \'_ ` _ \ / _ \ \'__/ _` |/ _ \ \n| |_) | | | | | | | | | |  __/ | | (_| |  __/\n|____/|_|_| |_|_| |_| |_|\___|_|  \__, |\___|\n                                   __/ |\n                                  |___/```')
+        e = discord.Embed(color=discord.Color.blurple(), description=f'```fix\n{watermark}```')
         e.set_footer(text="Made by Roblox Thot")
         for page in self.paginator.pages:
             e.description += page
