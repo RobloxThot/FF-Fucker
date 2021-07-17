@@ -1,4 +1,4 @@
-import discord,random,requests,os,sys
+import discord,random,requests,os,sys,ffmpeg
 import datetime, time
 from discord.ext import commands
 from pytube import YouTube
@@ -184,6 +184,38 @@ class Owner(commands.Cog, name='Owner only commands'):
         """Shutdown the bot."""
         await ctx.bot.logout()
         sys.exit()
+
+    @commands.command(aliases=["g"])
+    @commands.is_owner()
+    async def glitch(self, ctx):
+        """Shutdown the bot."""
+        video = requests.get(ctx.message.attachments[0].url).content
+        userDir = "tempfiles/" + str(ctx.message.author.id)
+        videoDir = userDir + ctx.message.attachments[0].filename
+
+        with open(videoDir, "wb") as file:
+            file.write(video)
+
+        try:
+            stream = ffmpeg.input(videoDir)
+            stream = ffmpeg.output(stream, userDir+'.ogg')
+            ffmpeg.run(stream,quiet=True)
+        except:
+            pass
+
+        os.remove(videoDir)
+        
+        try:
+            stream2 = ffmpeg.input(userDir+'.ogg')
+            stream2 = ffmpeg.output(stream2, userDir+'.mp4')
+            ffmpeg.run(stream2,quiet=True)
+            os.remove(userDir+'.ogg')
+        except:
+            pass
+        
+        with open(userDir+'.mp4', "rb") as file:
+            await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_Glitch_"+ctx.message.attachments[0].filename))
+        os.remove(userDir+'.mp4')
 
 #region Error handeling
 @Dms.merge.error
