@@ -123,7 +123,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
         else:
             await ctx.send_help()
 
-    @commands.command(aliases=['u'])
+    @commands.command(aliases=['u', 'ut', 'up'])
     async def uptime(self, ctx):
         """Bot uptime"""
         embed = discord.Embed(colour=discord.Color.blurple())
