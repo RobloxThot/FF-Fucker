@@ -192,9 +192,11 @@ class Owner(commands.Cog, name='Owner only commands'):
         video = requests.get(ctx.message.attachments[0].url).content
         userDir = "tempfiles/" + str(ctx.message.author.id)
         videoDir = userDir + ctx.message.attachments[0].filename
+        statusMsg = await ctx.reply(f'Downloading video please wait!', mention_author=False)
 
         with open(videoDir, "wb") as file:
             file.write(video)
+        await statusMsg.edit(content=f'Making the video glitchy.\nDownloaded file size: {file_size(videoDir)}')
 
         try:
             stream = ffmpeg.input(videoDir)
@@ -203,6 +205,7 @@ class Owner(commands.Cog, name='Owner only commands'):
         except:
             pass
 
+        await statusMsg.edit(content=f'Making the video glitchy.\nDownloaded file size: {file_size(videoDir)}\nCorrupted file size: {file_size( userDir + ".ogg")}')
         os.remove(videoDir)
 
         try:
@@ -213,8 +216,10 @@ class Owner(commands.Cog, name='Owner only commands'):
         except:
             pass
         
+        await statusMsg.edit(content=f'Uploading video.\nFinal file size: {file_size(userDir+".mp4")}')
         with open(userDir+'.mp4', "rb") as file:
             await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_Glitch_"+ctx.message.attachments[0].filename))
+        statusMsg.delete()
         os.remove(userDir+'.mp4')
 
 #region Error handeling
