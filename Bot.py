@@ -223,7 +223,7 @@ class Owner(commands.Cog, name='Owner only commands'):
             await statusMsg.delete()
             os.remove(userDir+'.mp4')
         else:
-            ctx.reply("You must send a video.")
+            await ctx.reply("You must send a video.")
 
 #region Error handeling
 @bot.event
