@@ -1,6 +1,7 @@
 import discord,random,requests,os,sys,ffmpeg
 import datetime, time
 from discord.ext import commands
+from bs4 import BeautifulSoup
 from pytube import YouTube
 
 start_time = time.time()
@@ -153,6 +154,20 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
             await ctx.reply(f'Your file is:', file=discord.File(file, f'{YouTube(link).title}.mp3'))
         await statusMsg.delete()
         os.remove("video/" + str(ctx.message.author.id) + ".mp4")
+        
+    @commands.command(aliases=["if"])
+    async def IFunny(self, ctx, link):
+        """Made bc a friend wanted it."""
+        response = requests.get(link)
+        soup = BeautifulSoup(response.text, features="lxml")
+
+        metas = soup.find_all('meta')
+
+        for m in metas:
+            if m.get ('property') == 'og:video:secure_url':
+                desc = m.get('content')
+                await ctx.reply(desc)
+                break
         
     @commands.command(aliases=["g"])
     async def glitch(self, ctx):
