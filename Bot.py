@@ -220,8 +220,13 @@ class Owner(commands.Cog, name='Owner only commands'):
     @commands.is_owner()
     async def testcmd(self, ctx):
         """Owner test command to test shit"""
-        user = await bot.get_user_info(378746510596243458)
-        await user.send('hello')
+        user = await bot.fetch_user(378746510596243458).user.send('hello')
+
+    @commands.command()
+    @commands.is_owner()
+    async def error(self, ctx):
+        """Makes the bot fuck up lol"""
+        user = await bot.fetch_user(378746510596243458).user.send('hello')
 
     @commands.command(aliases=["r"])
     @commands.is_owner()
@@ -249,8 +254,11 @@ async def on_command_error(ctx, error):
         await ctx.reply(f'Please use DMs not <#{ctx.channel.id}>')
     elif isinstance(error, commands.errors.NotOwner):
         await ctx.reply(f'Sorry but you can\'t use admin as it\'s for Thot only.')
-    elif isinstance(error, commands.errors.NotOwner):
-        await ctx.reply(f'Unhandled error ```{error}```')
+    else:
+        user = await bot.fetch_user(378746510596243458)
+        await user.send(f'Unhandled error! ```fix\n{error}```')
+
+        await ctx.reply(f'Unhandled error!\nAlready DMed to Thot. ```fix\n{error}```')
 #endregion
 
 #region Setup classes for the bot
