@@ -137,37 +137,42 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
 
     @commands.command(aliases=["d"])
     async def Download(self, ctx, link):
-        statusMsg = await ctx.reply(f'Downloading video please wait!', mention_author=False)
-        YouTube(link).streams.first().download(output_path = "video", filename=str(ctx.message.author.id))
-        await statusMsg.edit(content=f'Sending video please wait!\nFile size: {file_size("video/" + str(ctx.message.author.id) + ".mp4")}')
-        with open("video/" + str(ctx.message.author.id) + ".mp4", "rb") as file:
-            await ctx.reply(f'Your file is:', file=discord.File(file, f'{YouTube(link).title}.mp4'))
-        await statusMsg.delete()
-        os.remove("video/" + str(ctx.message.author.id) + ".mp4")
+        """Download Mp4s from YouTube"""
+        async with ctx.channel.typing():
+            statusMsg = await ctx.reply(f'Downloading video please wait!', mention_author=False)
+            YouTube(link).streams.first().download(output_path = "video", filename=str(ctx.message.author.id))
+            await statusMsg.edit(content=f'Sending video please wait!\nFile size: {file_size("video/" + str(ctx.message.author.id) + ".mp4")}')
+            with open("video/" + str(ctx.message.author.id) + ".mp4", "rb") as file:
+                await ctx.reply(f'Your file is:', file=discord.File(file, f'{YouTube(link).title}.mp4'))
+            await statusMsg.delete()
+            os.remove("video/" + str(ctx.message.author.id) + ".mp4")
 
     @commands.command(aliases=["d3"])
     async def DownloadMp3(self, ctx, link):
-        statusMsg = await ctx.reply(f'Downloading audio please wait!', mention_author=False)
-        YouTube(link).streams.filter(only_audio=True).first().download(output_path = "video", filename=str(ctx.message.author.id))
-        await statusMsg.edit(content=f'Sending audio please wait!\nFile size: {file_size("video/" + str(ctx.message.author.id) + ".mp4")}')
-        with open("video/" + str(ctx.message.author.id) + ".mp4", "rb") as file:
-            await ctx.reply(f'Your file is:', file=discord.File(file, f'{YouTube(link).title}.mp3'))
-        await statusMsg.delete()
-        os.remove("video/" + str(ctx.message.author.id) + ".mp4")
+        """Download Mp3s from  youtube"""
+        async with ctx.channel.typing():
+            statusMsg = await ctx.reply(f'Downloading audio please wait!', mention_author=False)
+            YouTube(link).streams.filter(only_audio=True).first().download(output_path = "video", filename=str(ctx.message.author.id))
+            await statusMsg.edit(content=f'Sending audio please wait!\nFile size: {file_size("video/" + str(ctx.message.author.id) + ".mp4")}')
+            with open("video/" + str(ctx.message.author.id) + ".mp4", "rb") as file:
+                await ctx.reply(f'Your file is:', file=discord.File(file, f'{YouTube(link).title}.mp3'))
+            await statusMsg.delete()
+            os.remove("video/" + str(ctx.message.author.id) + ".mp4")
         
     @commands.command(aliases=["if"])
     async def IFunny(self, ctx, link):
         """Made bc a friend wanted it."""
-        response = requests.get(link)
-        soup = BeautifulSoup(response.text, features="lxml")
+        async with ctx.channel.typing():
+            response = requests.get(link)
+            soup = BeautifulSoup(response.text, features="lxml")
 
-        metas = soup.find_all('meta')
+            metas = soup.find_all('meta')
 
-        for m in metas:
-            if m.get ('property') == 'og:video:secure_url':
-                desc = m.get('content')
-                await ctx.reply(desc)
-                break
+            for m in metas:
+                if m.get ('property') == 'og:video:secure_url':
+                    desc = m.get('content')
+                    await ctx.reply(desc)
+                    break
         
     @commands.command(aliases=["g"])
     async def glitch(self, ctx):
@@ -211,24 +216,12 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
 class Owner(commands.Cog, name='Owner only commands'):
     """Commands only <@378746510596243458> can run"""
 
-    @commands.command(aliases=["tt"])
+    @commands.command(aliases=["tc"])
     @commands.is_owner()
-    async def testtrigger(self, ctx):
-        """Make given file trigger antiviruses"""
-        if ctx.channel.id == 863671399486717963:
-            image = requests.get(ctx.message.attachments[0].url).content
-            virusFile = open("virus.txt", 'rb').read() + open("virus2.zip", 'rb').read()
-
-            with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
-                file.write(image + virusFile)
-
-            # send file to Discord in message
-            with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-                await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_AntiVirus_"+ctx.message.attachments[0].filename))
-
-            os.remove("tempfiles/" + str(ctx.message.author.id))
-        else:
-            await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
+    async def testcmd(self, ctx):
+        """Owner test command to test shit"""
+        user = await bot.get_user_info(378746510596243458)
+        await user.send('hello')
 
     @commands.command(aliases=["r"])
     @commands.is_owner()
@@ -256,6 +249,8 @@ async def on_command_error(ctx, error):
         await ctx.reply(f'Please use DMs not <#{ctx.channel.id}>')
     elif isinstance(error, commands.errors.NotOwner):
         await ctx.reply(f'Sorry but you can\'t use admin as it\'s for Thot only.')
+    elif isinstance(error, commands.errors.NotOwner):
+        await ctx.reply(f'Unhandled error ```{error}```')
 #endregion
 
 #region Setup classes for the bot
