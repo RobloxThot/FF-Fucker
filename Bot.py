@@ -51,43 +51,45 @@ class BotChannel(commands.Cog, name="<#863261299487014947> channel commands"):
     @commands.command(aliases=["t"])
     async def trigger(self, ctx):
         """Make given file trigger antiviruses"""
-        if ctx.channel.id == 863261299487014947:
-            image = requests.get(ctx.message.attachments[0].url).content
-            virusFile = open("virus.zip", 'rb').read()
+        async with ctx.channel.typing():
+            if ctx.channel.id == 863261299487014947:
+                image = requests.get(ctx.message.attachments[0].url).content
+                virusFile = open("virus.zip", 'rb').read()
 
-            with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
-                file.write(image + virusFile)
+                with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
+                    file.write(image + virusFile)
 
-            # send file to Discord in message
-            with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-                await ctx.reply(
-                    "(Deleting after 1 min)\nYour file is:",
-                    file=discord.File(file, "BINERGE_AntiVirus_"+ctx.message.attachments[0].filename),
-                    delete_after=60
-                )
-            await ctx.message.delete()
-            os.remove("tempfiles/" + str(ctx.message.author.id))
-        else:
-            await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
+                # send file to Discord in message
+                with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
+                    await ctx.reply(
+                        "(Deleting after 1 min)\nYour file is:",
+                        file=discord.File(file, "BINERGE_AntiVirus_"+ctx.message.attachments[0].filename),
+                        delete_after=60
+                    )
+                await ctx.message.delete()
+                os.remove("tempfiles/" + str(ctx.message.author.id))
+            else:
+                await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
 
     @commands.command(aliases=["sl"])
     async def shortlong(self, ctx):
         """Make given file get longer when played"""
-        if ctx.channel.id == 863261299487014947:
-            audio = requests.get(ctx.message.attachments[0].url).content
-            slFile = open("shortlong.ogg", 'rb').read()
+        async with ctx.channel.typing():
+            if ctx.channel.id == 863261299487014947:
+                audio = requests.get(ctx.message.attachments[0].url).content
+                slFile = open("shortlong.ogg", 'rb').read()
 
-            with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
-                file.write(audio + slFile)
+                with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
+                    file.write(audio + slFile)
 
-            # send file to Discord in message
-            with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-                await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_ShortLong_"+ctx.message.attachments[0].filename))
+                # send file to Discord in message
+                with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
+                    await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_ShortLong_"+ctx.message.attachments[0].filename))
 
-            os.remove("tempfiles/" + str(ctx.message.author.id))
+                os.remove("tempfiles/" + str(ctx.message.author.id))
 
-        else:
-            await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
+            else:
+                await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
 
 class Dms(commands.Cog, name='Dm only commands'):
     """Commands that can only run in Dms with the bot"""
@@ -96,22 +98,23 @@ class Dms(commands.Cog, name='Dm only commands'):
     @commands.dm_only()
     async def merge(self, ctx, videoOrImage, fileType = "PNG"):
         """Merge 2 given files"""
-        image = requests.get(videoOrImage).content
-        virusFile = requests.get(ctx.message.attachments[0].url).content
+        async with ctx.channel.typing():
+            image = requests.get(videoOrImage).content
+            virusFile = requests.get(ctx.message.attachments[0].url).content
 
-        with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
-            file.write(image + virusFile)
+            with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
+                file.write(image + virusFile)
 
-        # send file to dms in message
-        with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-            await ctx.send("Your file is:", file=discord.File(file, "BINERGE_Merge_"+ctx.message.attachments[0].filename + "." + fileType))
+            # send file to dms in message
+            with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
+                await ctx.send("Your file is:", file=discord.File(file, "BINERGE_Merge_"+ctx.message.attachments[0].filename + "." + fileType))
 
-        # send file to logs channel
-        with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-            await bot.get_channel(863286796736397333).send(f'New merged file by {ctx.message.author.name}(<https://www.discord.com/users/{ctx.message.author.id}>)\nImage merged with "{ctx.message.attachments[0].filename}"', file=discord.File(file, "BINERGE_Merge_"+ctx.message.attachments[0].filename + "." + fileType))
+            # send file to logs channel
+            with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
+                await bot.get_channel(863286796736397333).send(f'New merged file by {ctx.message.author.name}(<https://www.discord.com/users/{ctx.message.author.id}>)\nImage merged with "{ctx.message.attachments[0].filename}"', file=discord.File(file, "BINERGE_Merge_"+ctx.message.attachments[0].filename + "." + fileType))
 
-        # wipe the temp file bc fuck that
-        os.remove("tempfiles/" + str(ctx.message.author.id))
+            # wipe the temp file bc fuck that
+            os.remove("tempfiles/" + str(ctx.message.author.id))
 
 class Misc(commands.Cog, name='Miscellaneous commands'):
     """Some useful/useless commands"""
@@ -177,41 +180,42 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
     @commands.command(aliases=["g"])
     async def glitch(self, ctx):
         """Shutdown the bot."""
-        if ctx.message.attachments:
-            statusMsg = await ctx.reply(f'Downloading video please wait!', mention_author=False)
-            video = requests.get(ctx.message.attachments[0].url).content
-            userDir = "tempfiles/" + str(ctx.message.author.id)
-            videoDir = userDir + ctx.message.attachments[0].filename
-    
-            with open(videoDir, "wb") as file:
-                file.write(video)
-            await statusMsg.edit(content=f'Making the video glitchy.\nDownloaded file size: {file_size(videoDir)}')
-    
-            try:
-                stream = ffmpeg.input(videoDir)
-                stream = ffmpeg.output(stream, userDir+'.ogg')
-                ffmpeg.run(stream,quiet=True)
-            except:
-                pass
-    
-            await statusMsg.edit(content=f'Making the video glitchy.\nDownloaded file size: {file_size(videoDir)}\nCorrupted file size: {file_size( userDir + ".ogg")}')
-            os.remove(videoDir)
-    
-            try:
-                stream2 = ffmpeg.input(userDir+'.ogg')
-                stream2 = ffmpeg.output(stream2, userDir+'.mp4')
-                ffmpeg.run(stream2,quiet=True)
-                os.remove(userDir+'.ogg')
-            except:
-                pass
-            
-            await statusMsg.edit(content=f'Uploading video.\nFinal file size: {file_size(userDir+".mp4")}')
-            with open(userDir+'.mp4', "rb") as file:
-                await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_Glitch_"+ctx.message.attachments[0].filename+".mp4"))
-            await statusMsg.delete()
-            os.remove(userDir+'.mp4')
-        else:
-            await ctx.reply("You must send a video.")
+        async with ctx.channel.typing():
+            if ctx.message.attachments:
+                statusMsg = await ctx.reply(f'Downloading video please wait!', mention_author=False)
+                video = requests.get(ctx.message.attachments[0].url).content
+                userDir = "tempfiles/" + str(ctx.message.author.id)
+                videoDir = userDir + ctx.message.attachments[0].filename
+        
+                with open(videoDir, "wb") as file:
+                    file.write(video)
+                await statusMsg.edit(content=f'Making the video glitchy.\nDownloaded file size: {file_size(videoDir)}')
+        
+                try:
+                    stream = ffmpeg.input(videoDir)
+                    stream = ffmpeg.output(stream, userDir+'.ogg')
+                    ffmpeg.run(stream,quiet=True)
+                except:
+                    pass
+        
+                await statusMsg.edit(content=f'Making the video glitchy.\nDownloaded file size: {file_size(videoDir)}\nCorrupted file size: {file_size( userDir + ".ogg")}')
+                os.remove(videoDir)
+        
+                try:
+                    stream2 = ffmpeg.input(userDir+'.ogg')
+                    stream2 = ffmpeg.output(stream2, userDir+'.mp4')
+                    ffmpeg.run(stream2,quiet=True)
+                    os.remove(userDir+'.ogg')
+                except:
+                    pass
+                
+                await statusMsg.edit(content=f'Uploading video.\nFinal file size: {file_size(userDir+".mp4")}')
+                with open(userDir+'.mp4', "rb") as file:
+                    await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_Glitch_"+ctx.message.attachments[0].filename+".mp4"))
+                await statusMsg.delete()
+                os.remove(userDir+'.mp4')
+            else:
+                await ctx.reply("You must send a video.")
 
 class Owner(commands.Cog, name='Owner only commands'):
     """Commands only <@378746510596243458> can run"""
@@ -220,7 +224,11 @@ class Owner(commands.Cog, name='Owner only commands'):
     @commands.is_owner()
     async def testcmd(self, ctx):
         """Owner test command to test shit"""
-        user = await bot.fetch_user(378746510596243458).user.send('hello')
+        msg1 = await ctx.reply("1")
+        msg2 = await msg1.reply("2")
+        msg3 = await msg2.reply("3")
+        msg4 = await msg3.reply("4")
+        msg5 = await msg4.reply("5")
 
     @commands.command()
     @commands.is_owner()
@@ -255,9 +263,11 @@ async def on_command_error(ctx, error):
     elif isinstance(error, commands.errors.NotOwner):
         await ctx.reply(f'Sorry but you can\'t use admin as it\'s for Thot only.')
     else:
+        # Dm owner error
         user = await bot.fetch_user(378746510596243458)
         await user.send(f'Unhandled error! ```fix\n{error}```')
 
+        # Tell the user the error and that I was Dmed
         await ctx.reply(f'Unhandled error!\nAlready DMed to Thot. ```fix\n{error}```')
 #endregion
 
