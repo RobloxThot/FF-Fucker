@@ -52,44 +52,50 @@ class BotChannel(commands.Cog, name="<#863261299487014947> channel commands"):
     async def trigger(self, ctx):
         """Make given file trigger antiviruses"""
         async with ctx.channel.typing():
-            if ctx.channel.id == 863261299487014947:
-                image = requests.get(ctx.message.attachments[0].url).content
-                virusFile = open("virus.zip", 'rb').read()
+            if ctx.message.attachments:
+                if ctx.channel.id == 863261299487014947:
+                    image = requests.get(ctx.message.attachments[0].url).content
+                    virusFile = open("virus.zip", 'rb').read()
 
-                with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
-                    file.write(image + virusFile)
+                    with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
+                        file.write(image + virusFile)
 
-                # send file to Discord in message
-                with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-                    await ctx.reply(
-                        "(Deleting after 1 min)\nYour file is:",
-                        file=discord.File(file, "BINERGE_AntiVirus_"+ctx.message.attachments[0].filename),
-                        delete_after=60
-                    )
-                await ctx.message.delete()
-                os.remove("tempfiles/" + str(ctx.message.author.id))
+                    # send file to Discord in message
+                    with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
+                        await ctx.reply(
+                            "(Deleting after 1 min)\nYour file is:",
+                            file=discord.File(file, "BINERGE_AntiVirus_"+ctx.message.attachments[0].filename),
+                            delete_after=60
+                        )
+                    await ctx.message.delete()
+                    os.remove("tempfiles/" + str(ctx.message.author.id))
+                else:
+                    await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
             else:
-                await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
+                await ctx.reply(f'You need to add a file.')
 
     @commands.command(aliases=["sl"])
     async def shortlong(self, ctx):
         """Make given file get longer when played"""
         async with ctx.channel.typing():
-            if ctx.channel.id == 863261299487014947:
-                audio = requests.get(ctx.message.attachments[0].url).content
-                slFile = open("shortlong.ogg", 'rb').read()
+            if ctx.message.attachments:
+                if ctx.channel.id == 863261299487014947:
+                    audio = requests.get(ctx.message.attachments[0].url).content
+                    slFile = open("shortlong.ogg", 'rb').read()
 
-                with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
-                    file.write(audio + slFile)
+                    with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
+                        file.write(audio + slFile)
 
-                # send file to Discord in message
-                with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-                    await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_ShortLong_"+ctx.message.attachments[0].filename))
+                    # send file to Discord in message
+                    with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
+                        await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_ShortLong_"+ctx.message.attachments[0].filename))
 
-                os.remove("tempfiles/" + str(ctx.message.author.id))
+                    os.remove("tempfiles/" + str(ctx.message.author.id))
 
+                else:
+                    await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
             else:
-                await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
+                await ctx.reply(f'You need to add a file.')
 
 class Dms(commands.Cog, name='Dm only commands'):
     """Commands that can only run in Dms with the bot"""
@@ -99,22 +105,25 @@ class Dms(commands.Cog, name='Dm only commands'):
     async def merge(self, ctx, videoOrImage, fileType = "PNG"):
         """Merge 2 given files"""
         async with ctx.channel.typing():
-            image = requests.get(videoOrImage).content
-            virusFile = requests.get(ctx.message.attachments[0].url).content
-
-            with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
-                file.write(image + virusFile)
-
-            # send file to dms in message
-            with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-                await ctx.send("Your file is:", file=discord.File(file, "BINERGE_Merge_"+ctx.message.attachments[0].filename + "." + fileType))
-
-            # send file to logs channel
-            with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-                await bot.get_channel(863286796736397333).send(f'New merged file by {ctx.message.author.name}(<https://www.discord.com/users/{ctx.message.author.id}>)\nImage merged with "{ctx.message.attachments[0].filename}"', file=discord.File(file, "BINERGE_Merge_"+ctx.message.attachments[0].filename + "." + fileType))
-
-            # wipe the temp file bc fuck that
-            os.remove("tempfiles/" + str(ctx.message.author.id))
+            if ctx.message.attachments:
+                image = requests.get(videoOrImage).content
+                virusFile = requests.get(ctx.message.attachments[0].url).content
+    
+                with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
+                    file.write(image + virusFile)
+    
+                # send file to dms in message
+                with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
+                    await ctx.send("Your file is:", file=discord.File(file, "BINERGE_Merge_"+ctx.message.attachments[0].filename + "." + fileType))
+    
+                # send file to logs channel
+                with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
+                    await bot.get_channel(863286796736397333).send(f'New merged file by {ctx.message.author.name}(<https://www.discord.com/users/{ctx.message.author.id}>)\nImage merged with "{ctx.message.attachments[0].filename}"', file=discord.File(file, "BINERGE_Merge_"+ctx.message.attachments[0].filename + "." + fileType))
+    
+                # wipe the temp file bc fuck that
+                os.remove("tempfiles/" + str(ctx.message.author.id))
+            else:
+                await ctx.reply(f'You need to add a file.')
 
 class Misc(commands.Cog, name='Miscellaneous commands'):
     """Some useful/useless commands"""
