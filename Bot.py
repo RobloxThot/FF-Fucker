@@ -266,7 +266,7 @@ async def on_command_error(ctx, error):
         if ctx.message.author.id != 378746510596243458:
             # Dm owner error
             user = await bot.fetch_user(378746510596243458)
-            await user.send(f'Unhandled error! ```fix\n{error}```')
+            await user.send(f'Error from: <@{ctx.message.author.id}>Unhandled error! ```fix\n{error}```')
 
             # Tell the user the error and that I was Dmed
             await ctx.reply(f'Unhandled error!\nAlready DMed to Thot. ```fix\n{error}```')
