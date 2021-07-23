@@ -179,7 +179,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
         
     @commands.command(aliases=["g"])
     async def glitch(self, ctx):
-        """Shutdown the bot."""
+        """Make a video glitchy."""
         async with ctx.channel.typing():
             if ctx.message.attachments:
                 statusMsg = await ctx.reply(f'Downloading video please wait!', mention_author=False)
@@ -217,6 +217,39 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
             else:
                 await ctx.reply("You must send a video.")
 
+    @commands.command(aliases=["br"])
+    async def BitRate(self, ctx, Bitrate = 3000):
+        """Change video bitrate"""
+        async with ctx.channel.typing():
+            if ctx.message.attachments:
+                statusMsg = await ctx.reply(f'Downloading video please wait!', mention_author=False)
+                video = requests.get(ctx.message.attachments[0].url).content
+                userDir = "tempfiles/" + str(ctx.message.author.id)
+                videoDir = userDir + ctx.message.attachments[0].filename
+        
+                with open(videoDir, "wb") as file:
+                    file.write(video)
+                await statusMsg.edit(content=f'Changing bitrate.\nDownloaded file size: {file_size(videoDir)}')
+        
+                try:
+                    stream = ffmpeg.input(videoDir)
+                    stream = ffmpeg.output(stream, userDir+'.mp4',
+                            video_bitrate = Bitrate,
+                            audio_bitrate = Bitrate)
+                    ffmpeg.run(stream, quiet=True,)
+                except:
+                    pass
+                
+                os.remove(videoDir)
+                await statusMsg.edit(content=f'Uploading video.\nFinal file size: {file_size(userDir+".mp4")}')
+                with open(userDir+'.mp4', "rb") as file:
+                    await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_BitRate_"+ctx.message.attachments[0].filename+".mp4"))
+                
+                await statusMsg.delete()
+                os.remove(userDir+'.mp4')
+            else:
+                await ctx.reply("You must send a video.")
+
 class Owner(commands.Cog, name='Owner only commands'):
     """Commands only <@378746510596243458> can run"""
 
@@ -248,7 +281,6 @@ class Owner(commands.Cog, name='Owner only commands'):
     async def shutdown(self, ctx):
         """Shutdown the bot."""
         await ctx.message.delete()
-        await ctx.bot.logout()
         sys.exit()
 
 #region Error handeling
@@ -266,7 +298,7 @@ async def on_command_error(ctx, error):
         if ctx.message.author.id != 378746510596243458:
             # Dm owner error
             user = await bot.fetch_user(378746510596243458)
-            await user.send(f'Error from: <@{ctx.message.author.id}>Unhandled error! ```fix\n{error}```')
+            await user.send(f'Error from: <@{ctx.message.author.id}>\nUnhandled error! ```fix\n{error}```')
 
             # Tell the user the error and that I was Dmed
             await ctx.reply(f'Unhandled error!\nAlready DMed to Thot. ```fix\n{error}```')
