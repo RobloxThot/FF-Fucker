@@ -218,8 +218,8 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
                 await ctx.reply("You must send a video.")
 
     @commands.command(aliases=["br"])
-    async def BitRate(self, ctx, Bitrate = 3000):
-        """Change video bitrate"""
+    async def BitRate(self, ctx, Bitrate = 5000):
+        """Change video's audio and visual bitrate"""
         async with ctx.channel.typing():
             if ctx.message.attachments:
                 statusMsg = await ctx.reply(f'Downloading video please wait!', mention_author=False)
