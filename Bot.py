@@ -1,5 +1,6 @@
 import discord,random,requests,os,sys,ffmpeg
 import datetime, time
+from imports import videoInfo
 from discord.ext import commands
 from bs4 import BeautifulSoup
 from pytube import YouTube
@@ -227,8 +228,12 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
                 await ctx.reply("You must send a video.")
 
     @commands.command(aliases=["br"])
-    async def BitRate(self, ctx, Bitrate = 5000):
+    async def BitRate(self, ctx, videoBitrate = 5000, audioBitrate = None):
         """Change video's audio and visual bitrate"""
+        # Set audio if user did not set any number for it
+        if audioBitrate == None:
+            audioBitrate = videoBitrate
+
         async with ctx.channel.typing():
             if ctx.message.attachments:
                 statusMsg = await ctx.reply(f'Downloading video please wait!', mention_author=False)
@@ -243,8 +248,8 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
                 try:
                     stream = ffmpeg.input(videoDir)
                     stream = ffmpeg.output(stream, userDir+'.mp4',
-                            video_bitrate = Bitrate,
-                            audio_bitrate = Bitrate)
+                            video_bitrate = videoBitrate,
+                            audio_bitrate = audioBitrate)
                     ffmpeg.run(stream, quiet=True,)
                 except:
                     pass
