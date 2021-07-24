@@ -50,7 +50,7 @@ class BotChannel(commands.Cog, name="<#863261299487014947> channel commands"):
     """Commands that can only run in <#863261299487014947>"""
 
     @commands.command(aliases=["t"])
-    async def trigger(self, ctx):
+    async def Trigger(self, ctx):
         """Make given file trigger antiviruses"""
         async with ctx.channel.typing():
             if ctx.message.attachments:
@@ -76,7 +76,7 @@ class BotChannel(commands.Cog, name="<#863261299487014947> channel commands"):
                 await ctx.reply(f'You need to add a file.')
 
     @commands.command(aliases=["sl"])
-    async def shortlong(self, ctx):
+    async def ShortLong(self, ctx):
         """Make given file get longer when played"""
         async with ctx.channel.typing():
             if ctx.message.attachments:
