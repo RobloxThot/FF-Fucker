@@ -388,6 +388,24 @@ class Owner(commands.Cog, name='Owner only commands'):
             activity=activityType
         )
 
+    @commands.command(aliases=["yts"])
+    @commands.is_owner()
+    async def YouTubeStatus(self, ctx, VideoIDOrLink):
+        """Chage status of bot."""
+        await ctx.message.delete()
+        videoName = YouTubeTools.getTitle(VideoIDOrLink)
+
+        #Check if its a ID or a link
+        if "https://" in VideoIDOrLink:
+            videoLink = VideoIDOrLink
+        else:
+            videoLink = "https://www.youtube.com/watch?v=%s" % VideoIDOrLink
+
+        activityType = discord.Streaming(name=videoName, platform="YouTube", url=videoLink)
+        await bot.change_presence(
+            activity=activityType
+        )
+
 #region Error handeling
 @bot.event
 async def on_command_error(ctx, error):
