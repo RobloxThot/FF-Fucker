@@ -367,8 +367,8 @@ class Owner(commands.Cog, name='Owner only commands'):
 
     @commands.command()
     @commands.is_owner()
-    async def status(self, ctx, statusMsg):
-        """Shutdown the bot."""
+    async def status(self, ctx, *, statusMsg):
+        """Chage status of bot."""
         await ctx.message.delete()
         await bot.change_presence(
             activity=discord.Game(name=statusMsg)
