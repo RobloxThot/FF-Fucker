@@ -272,7 +272,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
         
                 with open(videoDir, "wb") as file:
                     file.write(video)
-                await statusMsg.edit(content=f'Boosting to audio.\nDownloaded file size: {file_size(videoDir)}')
+                await statusMsg.edit(content=f'Boosting the audio.\n(Can take up to 30 seconds.)\nDownloaded file size: {file_size(videoDir)}')
 
                 stream = ffmpeg.input(videoDir)
                 joined = ffmpeg.concat(stream,stream, v=1, a=1).node
@@ -284,7 +284,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
                         video_bitrate = 1000
                         )
 
-                ffmpeg.run(output, overwrite_output=True)
+                ffmpeg.run(output, quiet=True)
                 await statusMsg.edit(content=f'Uploading audio.\nFile file size: {file_size(userDir+".webm")}')
                 with open(userDir+".webm", "rb") as file:
                     await ctx.reply("Your file is:", file=discord.File(file, ""+ctx.message.attachments[0].filename+".webm"))
