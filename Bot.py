@@ -10,7 +10,7 @@ intents = discord.Intents.default()
 intents.members = True
 
 bot = commands.Bot(command_prefix='.', intents=intents, case_insensitive=True)
-watermark = "  ____  _\n |  _ \(_)\n | |_) |_ _ __  _ __ ___   ___ _ __ __ _  ___\n |  _ <| | '_ \| '_ ` _ \ / _ \ '__/ _` |/ _ \ \n | |_) | | | | | | | | | |  __/ | | (_| |  __/\n |____/|_|_| |_|_| |_| |_|\___|_|  \__, |\___|\n                                    __/ |\n                                   |___/"
+watermark = "╭━━━┳━━━┳━━━╮\n┃╭━━┫╭━━┫╭━━╯\n┃╰━━┫╰━━┫╰━━╮\n┃╭━━┫╭━━┫╭━━╯\n┃┃╱╱┃┃╱╱┃┃\n╰╯╱╱╰╯╱╱╰╯"
 
 @bot.event
 async def on_ready():
@@ -65,7 +65,7 @@ class BotChannel(commands.Cog, name="<#863261299487014947> channel commands"):
                     with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
                         await ctx.reply(
                             "(Deleting after 1 min)\nYour file is:",
-                            file=discord.File(file, "BINERGE_AntiVirus_"+ctx.message.attachments[0].filename),
+                            file=discord.File(file, "FFF_AntiVirus_"+ctx.message.attachments[0].filename),
                             delete_after=60
                         )
                     await ctx.message.delete()
@@ -89,7 +89,7 @@ class BotChannel(commands.Cog, name="<#863261299487014947> channel commands"):
 
                     # send file to Discord in message
                     with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-                        await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_ShortLong_"+ctx.message.attachments[0].filename))
+                        await ctx.reply("Your file is:", file=discord.File(file, "FFF_ShortLong_"+ctx.message.attachments[0].filename))
 
                     os.remove("tempfiles/" + str(ctx.message.author.id))
 
@@ -115,11 +115,11 @@ class Dms(commands.Cog, name='Dm only commands'):
     
                 # send file to dms in message
                 with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-                    await ctx.send("Your file is:", file=discord.File(file, "BINERGE_Merge_"+ctx.message.attachments[0].filename + "." + fileType))
+                    await ctx.send("Your file is:", file=discord.File(file, "FFF_Merge_"+ctx.message.attachments[0].filename + "." + fileType))
     
                 # send file to logs channel
                 with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-                    await bot.get_channel(863286796736397333).send(f'New merged file by {ctx.message.author.name}(<https://www.discord.com/users/{ctx.message.author.id}>)\nImage merged with "{ctx.message.attachments[0].filename}"', file=discord.File(file, "BINERGE_Merge_"+ctx.message.attachments[0].filename + "." + fileType))
+                    await bot.get_channel(863286796736397333).send(f'New merged file by {ctx.message.author.name}(<https://www.discord.com/users/{ctx.message.author.id}>)\nImage merged with "{ctx.message.attachments[0].filename}"', file=discord.File(file, "FFF_Merge_"+ctx.message.attachments[0].filename + "." + fileType))
     
                 # wipe the temp file bc fuck that
                 os.remove("tempfiles/" + str(ctx.message.author.id))
@@ -223,7 +223,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
                 
                 await statusMsg.edit(content=f'Uploading video.\nFinal file size: {file_size(userDir+".mp4")}')
                 with open(userDir+'.mp4', "rb") as file:
-                    await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_Glitch_"+ctx.message.attachments[0].filename+".mp4"))
+                    await ctx.reply("Your file is:", file=discord.File(file, "FFF_Glitch_"+ctx.message.attachments[0].filename+".mp4"))
                 await statusMsg.delete()
                 os.remove(userDir+'.mp4')
             else:
@@ -325,7 +325,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
                 os.remove(videoDir)
                 await statusMsg.edit(content=f'Uploading video.\nFinal file size: {file_size(userDir+".mp4")}')
                 with open(userDir+'.mp4', "rb") as file:
-                    await ctx.reply("Your file is:", file=discord.File(file, "BINERGE_BitRate_"+ctx.message.attachments[0].filename+".mp4"))
+                    await ctx.reply("Your file is:", file=discord.File(file, "FFF_BitRate_"+ctx.message.attachments[0].filename+".mp4"))
                 
                 await statusMsg.delete()
                 os.remove(userDir+'.mp4')
