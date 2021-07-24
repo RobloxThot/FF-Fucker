@@ -16,7 +16,7 @@ watermark = "╭━━━┳━━━┳━━━╮\n┃╭━━┫╭━━�
 async def on_ready():
     print(f'Logged in as {bot.user} (ID: {bot.user.id})')
     await bot.change_presence(
-        activity=discord.Game(name="with viruses. ☣️")
+        activity=discord.Game(name="with FFmpeg. 🎵")
     )
 
     print('------')
