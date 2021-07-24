@@ -272,7 +272,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
         
                 with open(videoDir, "wb") as file:
                     file.write(video)
-                await statusMsg.edit(content=f'Boosting the audio.\n(Can take up to 30 seconds.)\nDownloaded file size: {file_size(videoDir)}')
+                await statusMsg.edit(content=f'Boosting the audio.(<https://youtu.be/9EcjWd-O4jI>)\n(Can take up to 30 seconds.)\nDownloaded file size: {file_size(videoDir)}')
 
                 stream = ffmpeg.input(videoDir)
                 joined = ffmpeg.concat(stream,stream, v=1, a=1).node
