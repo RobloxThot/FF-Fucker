@@ -252,7 +252,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
 
                 os.remove(videoDir)
                 
-                await statusMsg.edit(content=f'Uploading audio.\n{audioType.capitalize()} file size: {file_size(userDir+"."+audioType)}')
+                await statusMsg.edit(content=f'Uploading file.\n{audioType.capitalize()} file size: {file_size(userDir+"."+audioType)}')
                 with open(userDir+"."+audioType, "rb") as file:
                     await ctx.reply("Your file is:", file=discord.File(file, ""+ctx.message.attachments[0].filename+"."+audioType))
                 await statusMsg.delete()
