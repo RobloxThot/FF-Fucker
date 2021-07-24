@@ -260,6 +260,41 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
             else:
                 await ctx.reply("You must send a file.")
 
+    @commands.command(aliases=["l"])
+    async def Loud(self, ctx, Volume = 1000):
+        """Make video loud."""
+        async with ctx.channel.typing():
+            if ctx.message.attachments:
+                statusMsg = await ctx.reply(f'Downloading file please wait!', mention_author=False)
+                video = requests.get(ctx.message.attachments[0].url).content
+                userDir = "tempfiles/" + str(ctx.message.author.id)
+                videoDir = userDir + ctx.message.attachments[0].filename
+        
+                with open(videoDir, "wb") as file:
+                    file.write(video)
+                await statusMsg.edit(content=f'Boosting to audio.\nDownloaded file size: {file_size(videoDir)}')
+
+                stream = ffmpeg.input(videoDir)
+                joined = ffmpeg.concat(stream,stream, v=1, a=1).node
+                video = joined[0]
+                audio = joined[1].filter('volume', Volume)
+                output = ffmpeg.output(video,
+                        audio,
+                        userDir+".webm",
+                        video_bitrate = 1000
+                        )
+
+                ffmpeg.run(output, overwrite_output=True)
+                await statusMsg.edit(content=f'Uploading audio.\nFile file size: {file_size(userDir+".webm")}')
+                with open(userDir+".webm", "rb") as file:
+                    await ctx.reply("Your file is:", file=discord.File(file, ""+ctx.message.attachments[0].filename+".webm"))
+                await statusMsg.delete()
+                os.remove(videoDir)
+                os.remove(userDir+".webm")
+        
+            else:
+                await ctx.reply("You must send a file.")
+
     @commands.command(aliases=["br"])
     async def BitRate(self, ctx, videoBitrate = 10000, audioBitrate = None):
         """Change video's audio and visual bitrate"""
