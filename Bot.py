@@ -130,7 +130,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
     """Some useful/useless commands"""
 
     @commands.command(aliases=['h'])
-    async def help(self, ctx, cmdToLookup = ""):
+    async def Help(self, ctx, cmdToLookup = ""):
         """Lists commands dumbass"""
         if cmdToLookup != "":
             await ctx.send_help(cmdToLookup)
@@ -138,7 +138,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
             await ctx.send_help()
 
     @commands.command(aliases=['u', 'ut', 'up'])
-    async def uptime(self, ctx):
+    async def UpTime(self, ctx):
         """Bot uptime"""
         embed = discord.Embed(colour=discord.Color.blurple())
         embed.add_field(name="Uptime", value=upTime())
@@ -190,7 +190,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
                     break
         
     @commands.command(aliases=["g"])
-    async def glitch(self, ctx):
+    async def Glitch(self, ctx):
         """Make a video glitchy."""
         async with ctx.channel.typing():
             if ctx.message.attachments:
