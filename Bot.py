@@ -1,10 +1,13 @@
 import discord,random,requests,os,sys,ffmpeg
 from discord import activity
 import datetime, time
-from imports import videoInfo
 from discord.ext import commands
 from bs4 import BeautifulSoup
 from pytube import YouTube
+
+#Custom imports
+from imports import YouTubeTools
+from imports import videoInfo
 
 start_time = time.time()
 intents = discord.Intents.default()
