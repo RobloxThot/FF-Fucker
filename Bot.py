@@ -365,6 +365,15 @@ class Owner(commands.Cog, name='Owner only commands'):
         await ctx.message.delete()
         sys.exit()
 
+    @commands.command()
+    @commands.is_owner()
+    async def status(self, ctx, statusMsg):
+        """Shutdown the bot."""
+        await ctx.message.delete()
+        await bot.change_presence(
+            activity=discord.Game(name=statusMsg)
+        )
+
 #region Error handeling
 @bot.event
 async def on_command_error(ctx, error):
