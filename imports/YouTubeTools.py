@@ -11,7 +11,7 @@ def getTitle(videoIdOrLink):
     else:
         videoLink = "https://www.youtube.com/watch?v=%s" % videoIdOrLink
 
-    #Setup to get the title i think (This was taken from stackoverflow)
+    #Setup to get the title i think (I am not sure bc this was taken from stackoverflow)
     params = {"format": "json", "url": videoLink}
     url = "https://www.youtube.com/oembed"
     query_string = urllib.parse.urlencode(params)
