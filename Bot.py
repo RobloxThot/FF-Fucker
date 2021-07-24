@@ -229,8 +229,8 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
             else:
                 await ctx.reply("You must send a video.")
         
-    @commands.command(aliases=["mp3"])
-    async def ToMp3(self, ctx, audioType = "mp3"):
+    @commands.command(aliases=["mp3","con"])
+    async def Convert(self, ctx, audioType = "mp3"):
         """Convert video/audio to mp3."""
         async with ctx.channel.typing():
             if ctx.message.attachments:
@@ -241,22 +241,22 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
         
                 with open(videoDir, "wb") as file:
                     file.write(video)
-                await statusMsg.edit(content=f'Converting to mp3.\nDownloaded file size: {file_size(videoDir)}')
+                await statusMsg.edit(content=f'Converting to {audioType}.\nDownloaded file size: {file_size(videoDir)}')
         
                 try:
                     stream = ffmpeg.input(videoDir)
-                    stream = ffmpeg.output(stream, userDir+audioType)
+                    stream = ffmpeg.output(stream, userDir+"."+audioType)
                     ffmpeg.run(stream,quiet=True)
                 except:
                     pass
 
                 os.remove(videoDir)
                 
-                await statusMsg.edit(content=f'Uploading audio.\nMp3 file size: {file_size(userDir+".mp3")}')
-                with open(userDir+audioType, "rb") as file:
-                    await ctx.reply("Your file is:", file=discord.File(file, ""+ctx.message.attachments[0].filename+audioType))
+                await statusMsg.edit(content=f'Uploading audio.\n{audioType.capitalize()} file size: {file_size(userDir+"."+audioType)}')
+                with open(userDir+"."+audioType, "rb") as file:
+                    await ctx.reply("Your file is:", file=discord.File(file, ""+ctx.message.attachments[0].filename+"."+audioType))
                 await statusMsg.delete()
-                os.remove(userDir+audioType)
+                os.remove(userDir+"."+audioType)
             else:
                 await ctx.reply("You must send a file.")
 
