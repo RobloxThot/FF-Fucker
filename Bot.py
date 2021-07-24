@@ -1,4 +1,5 @@
 import discord,random,requests,os,sys,ffmpeg
+from discord import activity
 import datetime, time
 from imports import videoInfo
 from discord.ext import commands
@@ -367,11 +368,21 @@ class Owner(commands.Cog, name='Owner only commands'):
 
     @commands.command()
     @commands.is_owner()
-    async def status(self, ctx, *, statusMsg):
+    async def status(self, ctx, statusType, *, statusMsg):
         """Chage status of bot."""
         await ctx.message.delete()
+        if statusType.lower() == "playing":
+            activityType = discord.Game(name=statusMsg)
+        elif statusType.lower() == "streaming":
+            activityType = discord.Streaming(name=statusMsg, platform="YouTube", url="https://www.youtube.com/watch?v=UTHLKHL_whs")
+        elif statusType.lower() == "listening":
+            activityType = discord.Activity(type=discord.ActivityType.listening, name=statusMsg)
+        elif statusType.lower() == "watching":
+            activityType = discord.Activity(type=discord.ActivityType.watching, name=statusMsg)
+        else:
+            activityType = discord.Activity(type=discord.ActivityType.listening, name="Cali Swag District - Teach Me How To Dougie")
         await bot.change_presence(
-            activity=discord.Game(name=statusMsg)
+            activity=activityType
         )
 
 #region Error handeling
