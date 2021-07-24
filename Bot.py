@@ -230,7 +230,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
                 await ctx.reply("You must send a video.")
 
     @commands.command(aliases=["br"])
-    async def BitRate(self, ctx, videoBitrate = 5000, audioBitrate = None):
+    async def BitRate(self, ctx, videoBitrate = 10000, audioBitrate = None):
         """Change video's audio and visual bitrate"""
         # Set audio if user did not set any number for it
         if audioBitrate == None:
