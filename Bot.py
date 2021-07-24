@@ -148,6 +148,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
         except discord.HTTPException:
             await ctx.reply("Current uptime: " + upTime())
 
+    @commands.is_owner()
     @commands.command(aliases=["d"])
     async def Download(self, ctx, link):
         """Download Mp4s from YouTube"""
@@ -160,6 +161,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
             await statusMsg.delete()
             os.remove("video/" + str(ctx.message.author.id) + ".mp4")
 
+    @commands.is_owner()
     @commands.command(aliases=["d3"])
     async def DownloadMp3(self, ctx, link):
         """Download Mp3s from  youtube"""
