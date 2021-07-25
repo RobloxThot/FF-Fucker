@@ -26,5 +26,6 @@ def getLength(filename):
     return str(datetime.timedelta(seconds=videoLength))
 
 if __name__ == "__main__":
-    print(getBitRate(r"C:\Users\Owner\Downloads\1560344_alternate_116437.720p.mp4"))
-    print(getLength(r"C:\Users\Owner\Downloads\1560344_alternate_116437.720p.mp4"))
+    videoLocation = input("Video file: ")
+    print(getBitRate(videoLocation.replace("\"", "")))
+    print(getLength(videoLocation.replace("\"", "")))
