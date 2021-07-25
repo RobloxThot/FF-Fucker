@@ -141,8 +141,10 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
         else:
             await ctx.send_help()
 
-    @commands.command()
-    async def userinfo(self, ctx, user: discord.Member = None):
+    
+    @commands.command(aliases=['info','ui'])
+    @commands.guild_only()
+    async def UserInfo(self, ctx, user: discord.Member = None):
         if user is None:
             user = ctx.author      
         date_format = "%a, %d %b %Y %I:%M %p"
@@ -162,6 +164,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
         return await ctx.send(embed=embed)
 
     @commands.command(aliases=['u', 'ut', 'up'])
+    @commands.guild_only()
     async def UpTime(self, ctx):
         """Bot uptime"""
         embed = discord.Embed(colour=discord.Color.blurple())
@@ -197,7 +200,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
                 await ctx.reply(f'Your file is:', file=discord.File(file, f'{YouTube(link).title}.mp3'))
             await statusMsg.delete()
             os.remove("video/" + str(ctx.message.author.id) + ".mp4")
-        
+
     @commands.command(aliases=["if"])
     async def IFunny(self, ctx, link):
         """Made bc a friend wanted it."""
@@ -361,6 +364,7 @@ class Owner(commands.Cog, name='Owner only commands'):
 
     @commands.command(aliases=["tc"])
     @commands.is_owner()
+    @commands.guild_only()
     async def testcmd(self, ctx):
         """Owner test command to test shit"""
         msg1 = await ctx.reply("1")
@@ -371,12 +375,14 @@ class Owner(commands.Cog, name='Owner only commands'):
 
     @commands.command()
     @commands.is_owner()
+    @commands.guild_only()
     async def error(self, ctx):
         """Makes the bot fuck up lol"""
         user = await bot.fetch_user(378746510596243458).user.send('hello')
 
     @commands.command(aliases=["r"])
     @commands.is_owner()
+    @commands.guild_only()
     async def restart(self, ctx):
         """Restart the bot or shut it down if it's not in a loop!"""
         await ctx.message.delete()
@@ -384,6 +390,7 @@ class Owner(commands.Cog, name='Owner only commands'):
 
     @commands.command(aliases=["s"])
     @commands.is_owner()
+    @commands.guild_only()
     async def shutdown(self, ctx):
         """Shutdown the bot."""
         await ctx.message.delete()
@@ -391,6 +398,7 @@ class Owner(commands.Cog, name='Owner only commands'):
 
     @commands.command()
     @commands.is_owner()
+    @commands.guild_only()
     async def status(self, ctx, statusType, *, statusMsg):
         """Chage status of bot."""
         await ctx.message.delete()
@@ -410,6 +418,7 @@ class Owner(commands.Cog, name='Owner only commands'):
 
     @commands.command(aliases=["yts"])
     @commands.is_owner()
+    @commands.guild_only()
     async def YouTubeStatus(self, ctx, VideoIDOrLink):
         """Chage status of bot."""
         await ctx.message.delete()
