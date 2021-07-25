@@ -141,6 +141,26 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
         else:
             await ctx.send_help()
 
+    @commands.command()
+    async def userinfo(self, ctx, user: discord.Member = None):
+        if user is None:
+            user = ctx.author      
+        date_format = "%a, %d %b %Y %I:%M %p"
+        embed = discord.Embed(color=discord.Color.blurple(), description=user.mention)
+        embed.set_author(name=str(user), icon_url=user.avatar_url)
+        embed.set_thumbnail(url=user.avatar_url)
+        embed.add_field(name="Joined", value=user.joined_at.strftime(date_format))
+        members = sorted(ctx.guild.members, key=lambda m: m.joined_at)
+        embed.add_field(name="Join position", value=str(members.index(user)+1))
+        embed.add_field(name="Registered", value=user.created_at.strftime(date_format))
+        if len(user.roles) > 1:
+            role_string = ' '.join([r.mention for r in user.roles][1:])
+            embed.add_field(name="Roles [{}]".format(len(user.roles)-1), value=role_string, inline=False)
+        perm_string = ', '.join([str(p[0]).replace("_", " ").title() for p in user.guild_permissions if p[1]])
+        embed.add_field(name="Guild permissions", value=perm_string, inline=False)
+        embed.set_footer(text='ID: ' + str(user.id))
+        return await ctx.send(embed=embed)
+
     @commands.command(aliases=['u', 'ut', 'up'])
     async def UpTime(self, ctx):
         """Bot uptime"""
@@ -415,8 +435,12 @@ async def on_command_error(ctx, error):
         await ctx.reply("You are missing a required argument.\nEither read <#863261299286343697> or run .help. ")
     elif isinstance(error, commands.PrivateMessageOnly):
         await ctx.reply(f'Please use DMs not <#{ctx.channel.id}>')
+    elif isinstance(error, commands.NoPrivateMessage):
+        await ctx.reply(f'This cmd wont work in DMS.')
     elif isinstance(error, commands.errors.NotOwner):
         await ctx.reply(f'Sorry but you can\'t use admin as it\'s for Thot only.')
+    elif isinstance(error, commands.errors.MemberNotFound):
+        await ctx.reply(f'Could not find that fucker. (They need to be in this server)')
     else:
         if ctx.message.author.id != 378746510596243458:
             # Dm owner error
