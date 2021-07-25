@@ -329,7 +329,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
                 os.remove(videoDir)
                 await statusMsg.edit(content=f'Uploading video.\nFinal file size: {file_size(userDir+".mp4")}')
                 with open(userDir+'.mp4', "rb") as file:
-                    await ctx.reply(f'Video Bitrate: {videoBitrate}\nAudio Bitrate: {audioBitrate}\nYour file is:', file=discord.File(file, "FFF_BitRate_"+ctx.message.attachments[0].filename+".mp4"))
+                    await ctx.reply(f'Video Bitrate: {"{:,}".format(videoBitrate)}\nAudio Bitrate: {"{:,}".format(audioBitrate)}\nYour file is:', file=discord.File(file, "FFF_BitRate_"+ctx.message.attachments[0].filename+".mp4"))
                 
                 await statusMsg.delete()
                 os.remove(userDir+'.mp4')
