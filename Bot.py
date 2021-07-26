@@ -15,6 +15,7 @@ intents.members = True
 
 bot = commands.Bot(command_prefix='.', intents=intents, case_insensitive=True)
 watermark = "╭━━━┳━━━┳━━━╮\n┃╭━━┫╭━━┫╭━━╯\n┃╰━━┫╰━━┫╰━━╮\n┃╭━━┫╭━━┫╭━━╯\n┃┃╱╱┃┃╱╱┃┃\n╰╯╱╱╰╯╱╱╰╯"
+fileWatermark = "\n\n /$$$$$$$$ /$$$$$$$$ /$$$$$$$$ \n| $$_____/| $$_____/| $$_____/ \n| $$      | $$      | $$ \n| $$$$$   | $$$$$   | $$$$$ \n| $$__/   | $$__/   | $$__/ \n| $$      | $$      | $$ \n| $$      | $$      | $$ \n|__/      |__/      |__/"
 
 @bot.event
 async def on_ready():
