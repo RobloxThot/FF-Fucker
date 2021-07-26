@@ -323,7 +323,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
                 await ctx.reply("You must send a file.")
 
     @commands.command(aliases=["br"])
-    async def BitRate(self, ctx, videoBitrate = 10000, audioBitrate = None):
+    async def BitRate(self, ctx, videoBitrate:int = 10000, audioBitrate:int = None):
         """Change video's audio and visual bitrate"""
         # Set audio if user did not set any number for it
         if audioBitrate == None:
@@ -442,6 +442,8 @@ async def on_command_error(ctx, error):
         await ctx.reply("That command wasn't found! Sorry :(")
     elif isinstance(error, commands.errors.MissingRequiredArgument):
         await ctx.reply("You are missing a required argument.\nEither read <#863261299286343697> or run .help. ")
+    elif isinstance(error, commands.errors.BadArgument):
+        await ctx.reply("One/any of your arguments is fucked.\nEither read <#863261299286343697> or run .help. ")
     elif isinstance(error, commands.PrivateMessageOnly):
         await ctx.reply(f'Please use DMs not <#{ctx.channel.id}>')
     elif isinstance(error, commands.NoPrivateMessage):
