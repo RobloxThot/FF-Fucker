@@ -165,7 +165,6 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
         return await ctx.send(embed=embed)
 
     @commands.command(aliases=['u', 'ut', 'up'])
-    @commands.guild_only()
     async def UpTime(self, ctx):
         """Bot uptime"""
         embed = discord.Embed(colour=discord.Color.blurple())
@@ -257,6 +256,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
             else:
                 await ctx.reply("You must send a video.")
         
+    @commands.max_concurrency(1,per=commands.BucketType.default,wait=False)
     @commands.command(aliases=["mp3","con"])
     async def Convert(self, ctx, audioType = "mp3"):
         """Convert video/audio to mp3."""
@@ -288,6 +288,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
             else:
                 await ctx.reply("You must send a file.")
 
+    @commands.max_concurrency(1,per=commands.BucketType.default,wait=False)
     @commands.command(aliases=["l"])
     async def Loud(self, ctx, Volume = 1000):
         """Make video loud."""
@@ -445,14 +446,16 @@ async def on_command_error(ctx, error):
         await ctx.reply("You are missing a required argument.\nEither read <#863261299286343697> or run .help. ")
     elif isinstance(error, commands.errors.BadArgument):
         await ctx.reply("One/any of your arguments is fucked.\nEither read <#863261299286343697> or run .help. ")
-    elif isinstance(error, commands.PrivateMessageOnly):
-        await ctx.reply(f'Please use DMs not <#{ctx.channel.id}>')
-    elif isinstance(error, commands.NoPrivateMessage):
-        await ctx.reply(f'This cmd wont work in DMS.')
     elif isinstance(error, commands.errors.NotOwner):
         await ctx.reply(f'Sorry but you can\'t use admin as it\'s for Thot only.')
     elif isinstance(error, commands.errors.MemberNotFound):
         await ctx.reply(f'Could not find that fucker. (They need to be in this server)')
+    elif isinstance(error, commands.PrivateMessageOnly):
+        await ctx.reply(f'Please use DMs not <#{ctx.channel.id}>')
+    elif isinstance(error, commands.NoPrivateMessage):
+        await ctx.reply(f'This cmd wont work in DMS.')
+    elif isinstance(error, commands.MaxConcurrencyReached):
+        await ctx.reply(f'Some one is using a hevy use CMD please wait.')
     else:
         if ctx.message.author.id != 378746510596243458:
             # Dm owner error
