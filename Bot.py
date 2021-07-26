@@ -49,6 +49,11 @@ def file_size(file_path):
     if os.path.isfile(file_path):
         file_info = os.stat(file_path)
         return convert_bytes(file_info.st_size)
+
+def ThotOnly():
+    def checkUser(ctx):
+        return ctx.message.author.id == 85309593344815104
+    return commands.check(checkUser)
 #endregion
 
 class BotChannel(commands.Cog, name="<#863261299487014947> channel commands"):
