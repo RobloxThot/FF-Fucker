@@ -53,7 +53,7 @@ def file_size(file_path):
 
 def ThotOnly():
     def checkUser(ctx):
-        return ctx.message.author.id == 85309593344815104
+        return ctx.message.author.id == 378746510596243458
     return commands.check(checkUser)
 #endregion
 
@@ -181,7 +181,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
         except discord.HTTPException:
             await ctx.reply("Current uptime: " + upTime())
 
-    @commands.is_owner()
+    @ThotOnly()
     @commands.command(aliases=["d"])
     async def Download(self, ctx, link):
         """Download Mp4s from YouTube"""
@@ -194,7 +194,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
             await statusMsg.delete()
             os.remove("video/" + str(ctx.message.author.id) + ".mp4")
 
-    @commands.is_owner()
+    @ThotOnly()
     @commands.command(aliases=["d3"])
     async def DownloadMp3(self, ctx, link):
         """Download Mp3s from  youtube"""
@@ -367,19 +367,55 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
             else:
                 await ctx.reply("You must send a video.")
 
+    @commands.command(aliases=["Jpg"])
+    @commands.guild_only()
+    async def Jpeg(self, ctx, JpegQuality:int = 1):
+        """Owner test command to test shit"""
+        async with ctx.channel.typing():
+            if ctx.message.attachments:
+                imageData = requests.get(ctx.message.attachments[0].url).content
+                userDir = "tempfiles/" + str(ctx.message.author.id)
+                imageDir = userDir + ctx.message.attachments[0].filename
+
+                with open(imageDir, "wb") as file:
+                    file.write(imageData)
+                originalImage = Image.open(imageDir)
+                RgbImage = originalImage.convert('RGB')
+
+                RgbImage.save(userDir+'.jpg', quality=0)
+                os.remove(imageDir)
+                with open(userDir+'.jpg', "rb") as file:
+                    await ctx.reply(f'Your file is:', file=discord.File(file, "FFF_Jpg_"+ctx.message.attachments[0].filename+".jpg"))
+                os.remove(userDir+'.jpg')
+            else:
+                ctx.reply("need image file")
+
 class Owner(commands.Cog, name='Owner only commands'):
     """Commands only <@378746510596243458> can run"""
 
     @commands.command(aliases=["tc"])
     @ThotOnly()
     @commands.guild_only()
-    async def testcmd(self, ctx):
+    async def testcmd(self, ctx, JpegQuality:int = 1):
         """Owner test command to test shit"""
-        imgLocation = r"C:\Users\Owner\Downloads\New folder (4)\avatar_1385488.png"
-        originalImage = Image.open(imgLocation)
-        RgbImage = originalImage.convert('RGB')
+        async with ctx.channel.typing():
+            if ctx.message.attachments:
+                imageData = requests.get(ctx.message.attachments[0].url).content
+                userDir = "tempfiles/" + str(ctx.message.author.id)
+                imageDir = userDir + ctx.message.attachments[0].filename
 
-        RgbImage.save(r"C:\Users\Owner\Downloads\New folder (4)\avatar_13854882.jpg", quality=0)
+                with open(imageDir, "wb") as file:
+                    file.write(imageData)
+                originalImage = Image.open(imageDir)
+                RgbImage = originalImage.convert('RGB')
+
+                RgbImage.save(userDir+'.jpg', quality=0)
+                os.remove(imageDir)
+                with open(userDir+'.jpg', "rb") as file:
+                    await ctx.reply(f'Your file is:', file=discord.File(file, "FFF_Jpg_"+ctx.message.attachments[0].filename+".jpg"))
+                os.remove(userDir+'.jpg')
+            else:
+                ctx.reply("need image file")
 
     @commands.command()
     @commands.is_owner()

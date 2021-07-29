@@ -7,3 +7,6 @@ virus.*
 *.ogg
 *.mp3
 *.pyc
+*.jpg
+*.jpeg
+*.png
