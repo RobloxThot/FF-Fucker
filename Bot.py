@@ -1,9 +1,10 @@
 import discord,random,requests,os,sys,ffmpeg
-from discord import activity
-import datetime, time
 from discord.ext import commands
 from bs4 import BeautifulSoup
+from discord import activity
 from pytube import YouTube
+from PIL import Image
+import datetime, time
 
 #Custom imports
 from imports import YouTubeTools
@@ -370,15 +371,15 @@ class Owner(commands.Cog, name='Owner only commands'):
     """Commands only <@378746510596243458> can run"""
 
     @commands.command(aliases=["tc"])
-    @commands.is_owner()
+    @ThotOnly()
     @commands.guild_only()
     async def testcmd(self, ctx):
         """Owner test command to test shit"""
-        msg1 = await ctx.reply("1")
-        msg2 = await msg1.reply("2")
-        msg3 = await msg2.reply("3")
-        msg4 = await msg3.reply("4")
-        msg5 = await msg4.reply("5")
+        imgLocation = r"C:\Users\Owner\Downloads\New folder (4)\avatar_1385488.png"
+        originalImage = Image.open(imgLocation)
+        RgbImage = originalImage.convert('RGB')
+
+        RgbImage.save(r"C:\Users\Owner\Downloads\New folder (4)\avatar_13854882.jpg", quality=0)
 
     @commands.command()
     @commands.is_owner()
