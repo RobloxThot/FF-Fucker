@@ -223,7 +223,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
         asciiArt=""
         async with ctx.channel.typing():
             for x in pyfiglet.FigletFont.getFonts():
-                asciiArt += f'{x}\n\n{dashVarLength(x)}\n'
+                asciiArt += f'\n{x}\n{dashVarLength(x)}\n'
                 asciiArt += pyfiglet.figlet_format(Message, font=x,)
             f = StringIO(asciiArt)
             await ctx.reply(f'Your file is:', file=discord.File(f, f'Ascii-{Message}.txt'))
