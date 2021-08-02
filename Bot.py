@@ -86,18 +86,15 @@ class BotChannel(commands.Cog, name="<#863261299487014947> channel commands"):
                     image = requests.get(ctx.message.attachments[0].url).content
                     virusFile = open("virus.zip", 'rb').read()
 
-                    with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
-                        file.write(image + virusFile)
+                    file = BytesIO(image + virusFile)
 
                     # send file to Discord in message
-                    with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-                        await ctx.reply(
-                            "(Deleting after 1 min)\nYour file is:",
-                            file=discord.File(file, "FFF_AntiVirus_"+ctx.message.attachments[0].filename),
-                            delete_after=60
-                        )
+                    await ctx.reply(
+                        "(Deleting after 1 min)\nYour file is:",
+                        file=discord.File(file, "FFF_AntiVirus_"+ctx.message.attachments[0].filename),
+                        delete_after=60
+                    )
                     await ctx.message.delete()
-                    os.remove("tempfiles/" + str(ctx.message.author.id))
                 else:
                     await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
             else:
