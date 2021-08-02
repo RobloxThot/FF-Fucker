@@ -216,7 +216,6 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
             await statusMsg.delete()
             os.remove("video/" + str(ctx.message.author.id) + ".mp4")
 
-    @ThotOnly()
     @commands.command(aliases=["ascii","aa","art"])
     async def AsciiArt(self, ctx, Message):
         """
