@@ -1,8 +1,8 @@
-import discord,random,requests,os,sys,ffmpeg
+import discord,random,requests,os,sys,ffmpeg,pyfiglet
 from discord.ext import commands
 from bs4 import BeautifulSoup
-from discord import activity
 from pytube import YouTube
+from io import StringIO
 from PIL import Image
 import datetime, time
 
@@ -215,6 +215,20 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
                 await ctx.reply(f'Your file is:', file=discord.File(file, f'{YouTube(link).title}.mp3'))
             await statusMsg.delete()
             os.remove("video/" + str(ctx.message.author.id) + ".mp4")
+
+    @commands.guild_only()
+    @commands.command(aliases=["ascii","aa","art"])
+    async def AsciiArt(self, ctx, Message):
+        """
+        Makes a lot of Ascii Art.
+        """
+        asciiArt=""
+        async with ctx.channel.typing():
+            for x in pyfiglet.FigletFont.getFonts():
+                asciiArt += f'{x}\n\n{dashVarLength(x)}\n'
+                asciiArt += pyfiglet.figlet_format(Message, font=x,)
+            f = StringIO(asciiArt)
+            await ctx.reply(f'Your file is:', file=discord.File(f, f'Ascii-{Message}.txt'))
 
     @commands.command(aliases=["if"])
     async def IFunny(self, ctx, link):
