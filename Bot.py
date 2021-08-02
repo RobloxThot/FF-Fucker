@@ -393,7 +393,9 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
     @commands.command(aliases=["Jpg"])
     @commands.guild_only()
     async def Jpeg(self, ctx, JpegQuality:int = 1):
-        """Owner test command to test shit"""
+        """
+        Turns image into a crusty Jpg
+        """
         async with ctx.channel.typing():
             if ctx.message.attachments:
                 imageData = requests.get(ctx.message.attachments[0].url).content
