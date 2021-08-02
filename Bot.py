@@ -14,7 +14,7 @@ start_time = time.time()
 intents = discord.Intents.default()
 intents.members = True
 
-bot = commands.Bot(command_prefix='.', intents=intents, case_insensitive=True)
+bot = commands.Bot(command_prefix=commands.when_mentioned_or("."), intents=intents, case_insensitive=True)
 watermark = "╭━━━┳━━━┳━━━╮\n┃╭━━┫╭━━┫╭━━╯\n┃╰━━┫╰━━┫╰━━╮\n┃╭━━┫╭━━┫╭━━╯\n┃┃╱╱┃┃╱╱┃┃\n╰╯╱╱╰╯╱╱╰╯"
 fileWatermark = "\n\n /$$$$$$$$ /$$$$$$$$ /$$$$$$$$ \n| $$_____/| $$_____/| $$_____/ \n| $$      | $$      | $$ \n| $$$$$   | $$$$$   | $$$$$ \n| $$__/   | $$__/   | $$__/ \n| $$      | $$      | $$ \n| $$      | $$      | $$ \n|__/      |__/      |__/"
 
@@ -64,6 +64,14 @@ def dashVarLength(var:str):
     for y in range(len(var)):
         dashOutput+="-"
     return dashOutput
+
+def getFileType(imageLink:str):
+    """
+    Gets the file type for a image link
+    """
+    contentType = requests.head("https://media.discordapp.net/attachments/863286796736397333/865902240715898891/BINERGE_Merge_rat.exe.PNG").headers["Content-Type"]
+
+    return contentType.split("/",1)[1]
 #endregion
 
 class BotChannel(commands.Cog, name="<#863261299487014947> channel commands"):
