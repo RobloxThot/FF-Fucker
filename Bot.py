@@ -216,7 +216,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
             os.remove("video/" + str(ctx.message.author.id) + ".mp4")
 
     @commands.command(aliases=["ascii","aa","art"])
-    async def AsciiArt(self, ctx, Message):
+    async def AsciiArt(self, ctx, *, Message):
         """
         Makes a lot of Ascii Art.
         """
