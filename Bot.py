@@ -69,7 +69,7 @@ def getFileType(imageLink:str):
     """
     Gets the file type for a image link
     """
-    contentType = requests.head("https://media.discordapp.net/attachments/863286796736397333/865902240715898891/BINERGE_Merge_rat.exe.PNG").headers["Content-Type"]
+    contentType = requests.head(imageLink).headers["Content-Type"]
 
     return contentType.split("/",1)[1]
 #endregion
