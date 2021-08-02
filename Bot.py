@@ -414,7 +414,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
                 originalImage = Image.open(imageDir)
                 RgbImage = originalImage.convert('RGB')
 
-                RgbImage.save(userDir+'.jpg', quality=0)
+                RgbImage.save(userDir+'.jpg', quality=JpegQuality)
                 os.remove(imageDir)
                 with open(userDir+'.jpg', "rb") as file:
                     await ctx.reply(f'Your file is:', file=discord.File(file, "FFF_Jpg_"+ctx.message.attachments[0].filename+".jpg"))
