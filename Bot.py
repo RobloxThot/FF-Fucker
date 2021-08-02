@@ -240,8 +240,10 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
 
             for m in metas:
                 if m.get ('property') == 'og:video:secure_url':
-                    desc = m.get('content')
-                    await ctx.reply(desc)
+                    videoLink = m.get('content')
+                    fileType = getFileType(videoLink)
+                    file = BytesIO(requests.get(videoLink).content)
+                    await ctx.reply(f'Why do you use iFunny still?', file=discord.File(file, f'iUnfunny.{fileType}'))
                     break
         
     @commands.command(aliases=["g"])
