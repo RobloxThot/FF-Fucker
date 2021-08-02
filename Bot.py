@@ -55,6 +55,15 @@ def ThotOnly():
     def checkUser(ctx):
         return ctx.message.author.id == 378746510596243458
     return commands.check(checkUser)
+
+def dashVarLength(var:str):
+    """
+    Adds dashes for however long a string is
+    """
+    dashOutput=""
+    for y in range(len(var)):
+        dashOutput+="-"
+    return dashOutput
 #endregion
 
 class BotChannel(commands.Cog, name="<#863261299487014947> channel commands"):
