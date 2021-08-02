@@ -2,7 +2,7 @@ import discord,random,requests,os,sys,ffmpeg,pyfiglet
 from discord.ext import commands
 from bs4 import BeautifulSoup
 from pytube import YouTube
-from io import StringIO
+from io import StringIO, BytesIO
 from PIL import Image
 import datetime, time
 
@@ -130,19 +130,11 @@ class Dms(commands.Cog, name='Dm only commands'):
                 image = requests.get(videoOrImage).content
                 virusFile = requests.get(ctx.message.attachments[0].url).content
     
-                with open("tempfiles/" + str(ctx.message.author.id), "wb") as file:
-                    file.write(image + virusFile)
-    
                 # send file to dms in message
-                with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-                    await ctx.send("Your file is:", file=discord.File(file, "FFF_Merge_"+ctx.message.attachments[0].filename + "." + fileType))
+                await ctx.send("Your file is:", file=discord.File(BytesIO(image + virusFile), "FFF_Merge_"+ctx.message.attachments[0].filename + "." + fileType))
     
                 # send file to logs channel
-                with open("tempfiles/" + str(ctx.message.author.id), "rb") as file:
-                    await bot.get_channel(863286796736397333).send(f'New merged file by {ctx.message.author.name}(<https://www.discord.com/users/{ctx.message.author.id}>)\nImage merged with "{ctx.message.attachments[0].filename}"', file=discord.File(file, "FFF_Merge_"+ctx.message.attachments[0].filename + "." + fileType))
-    
-                # wipe the temp file bc fuck that
-                os.remove("tempfiles/" + str(ctx.message.author.id))
+                await bot.get_channel(863286796736397333).send(f'New merged file by {ctx.message.author.name}(<https://www.discord.com/users/{ctx.message.author.id}>)\nImage merged with "{ctx.message.attachments[0].filename}"', file=discord.File(BytesIO(image + virusFile), "FFF_Merge_"+ctx.message.attachments[0].filename + "." + fileType))
             else:
                 await ctx.reply(f'You need to add a file.')
 
@@ -216,7 +208,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
             await statusMsg.delete()
             os.remove("video/" + str(ctx.message.author.id) + ".mp4")
 
-    @commands.guild_only()
+    @ThotOnly()
     @commands.command(aliases=["ascii","aa","art"])
     async def AsciiArt(self, ctx, Message):
         """
