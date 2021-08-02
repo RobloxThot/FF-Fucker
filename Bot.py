@@ -193,7 +193,10 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
     @ThotOnly()
     @commands.command(aliases=["d"])
     async def Download(self, ctx, link):
-        """Download Mp4s from YouTube"""
+        """
+        Currently broken.
+        Download Mp4s from YouTube
+        """
         async with ctx.channel.typing():
             statusMsg = await ctx.reply(f'Downloading video please wait!', mention_author=False)
             YouTube(link).streams.first().download(output_path = "video", filename=str(ctx.message.author.id))
@@ -206,7 +209,10 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
     @ThotOnly()
     @commands.command(aliases=["d3"])
     async def DownloadMp3(self, ctx, link):
-        """Download Mp3s from  youtube"""
+        """
+        Currently broken.
+        Download Mp3s from  youtube
+        """
         async with ctx.channel.typing():
             statusMsg = await ctx.reply(f'Downloading audio please wait!', mention_author=False)
             YouTube(link).streams.filter(only_audio=True).first().download(output_path = "video", filename=str(ctx.message.author.id))
