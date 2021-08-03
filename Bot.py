@@ -183,38 +183,6 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
         except discord.HTTPException:
             await ctx.reply("Current uptime: " + upTime())
 
-    @ThotOnly()
-    @commands.command(aliases=["d"])
-    async def Download(self, ctx, link):
-        """
-        Currently broken.
-        Download Mp4s from YouTube
-        """
-        async with ctx.channel.typing():
-            statusMsg = await ctx.reply(f'Downloading video please wait!', mention_author=False)
-            YouTube(link).streams.first().download(output_path = "video", filename=str(ctx.message.author.id))
-            await statusMsg.edit(content=f'Sending video please wait!\nFile size: {file_size("video/" + str(ctx.message.author.id) + ".mp4")}')
-            with open("video/" + str(ctx.message.author.id) + ".mp4", "rb") as file:
-                await ctx.reply(f'Your file is:', file=discord.File(file, f'{YouTube(link).title}.mp4'))
-            await statusMsg.delete()
-            os.remove("video/" + str(ctx.message.author.id) + ".mp4")
-
-    @ThotOnly()
-    @commands.command(aliases=["d3"])
-    async def DownloadMp3(self, ctx, link):
-        """
-        Currently broken.
-        Download Mp3s from  youtube
-        """
-        async with ctx.channel.typing():
-            statusMsg = await ctx.reply(f'Downloading audio please wait!', mention_author=False)
-            YouTube(link).streams.filter(only_audio=True).first().download(output_path = "video", filename=str(ctx.message.author.id))
-            await statusMsg.edit(content=f'Sending audio please wait!\nFile size: {file_size("video/" + str(ctx.message.author.id) + ".mp4")}')
-            with open("video/" + str(ctx.message.author.id) + ".mp4", "rb") as file:
-                await ctx.reply(f'Your file is:', file=discord.File(file, f'{YouTube(link).title}.mp3'))
-            await statusMsg.delete()
-            os.remove("video/" + str(ctx.message.author.id) + ".mp4")
-
     @commands.command(aliases=["ascii","aa","art"])
     async def AsciiArt(self, ctx, *, Message):
         """
@@ -416,7 +384,39 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
                 ctx.reply("need image file")
 
 class Owner(commands.Cog, name='Owner only commands'):
-    """Commands only <@378746510596243458> can run"""
+    """Commands only Admins can run"""
+
+    @ThotOnly()
+    @commands.command(aliases=["d"])
+    async def Download(self, ctx, link):
+        """
+        Currently broken.
+        Download Mp4s from YouTube
+        """
+        async with ctx.channel.typing():
+            statusMsg = await ctx.reply(f'Downloading video please wait!', mention_author=False)
+            YouTube(link).streams.first().download(output_path = "video", filename=str(ctx.message.author.id))
+            await statusMsg.edit(content=f'Sending video please wait!\nFile size: {file_size("video/" + str(ctx.message.author.id) + ".mp4")}')
+            with open("video/" + str(ctx.message.author.id) + ".mp4", "rb") as file:
+                await ctx.reply(f'Your file is:', file=discord.File(file, f'{YouTube(link).title}.mp4'))
+            await statusMsg.delete()
+            os.remove("video/" + str(ctx.message.author.id) + ".mp4")
+
+    @ThotOnly()
+    @commands.command(aliases=["d3"])
+    async def DownloadMp3(self, ctx, link):
+        """
+        Currently broken.
+        Download Mp3s from  youtube
+        """
+        async with ctx.channel.typing():
+            statusMsg = await ctx.reply(f'Downloading audio please wait!', mention_author=False)
+            YouTube(link).streams.filter(only_audio=True).first().download(output_path = "video", filename=str(ctx.message.author.id))
+            await statusMsg.edit(content=f'Sending audio please wait!\nFile size: {file_size("video/" + str(ctx.message.author.id) + ".mp4")}')
+            with open("video/" + str(ctx.message.author.id) + ".mp4", "rb") as file:
+                await ctx.reply(f'Your file is:', file=discord.File(file, f'{YouTube(link).title}.mp3'))
+            await statusMsg.delete()
+            os.remove("video/" + str(ctx.message.author.id) + ".mp4")
 
     @commands.command(aliases=["tc"])
     @ThotOnly()
