@@ -65,6 +65,14 @@ def dashVarLength(var:str):
         dashOutput+="-"
     return dashOutput
 
+def getFileExtension(fileLink:str):
+    """
+    Gets the file extension for a link
+    """
+    contentType = requests.head(fileLink).headers["Content-Type"]
+
+    return contentType.split("/",1)[1]
+
 def getFileType(fileLink:str):
     """
     Gets the file type for a image link
