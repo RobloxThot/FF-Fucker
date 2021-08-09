@@ -75,11 +75,11 @@ def getFileExtension(fileLink:str):
 
 def getFileType(fileLink:str):
     """
-    Gets the file type for a image link
+    Get if the file is a "audio", "video", or "image"
     """
     contentType = requests.head(fileLink).headers["Content-Type"]
 
-    return contentType.split("/",1)[1]
+    return contentType.split("/",1)[0]
 #endregion
 
 class BotChannel(commands.Cog, name="<#863261299487014947> channel commands"):
@@ -216,7 +216,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
             for m in metas:
                 if m.get ('property') == 'og:video:secure_url':
                     videoLink = m.get('content')
-                    fileType = getFileType(videoLink)
+                    fileType = getFileExtension(videoLink)
                     file = BytesIO(requests.get(videoLink).content)
                     await ctx.reply(f'Why do you use iFunny still?', file=discord.File(file, f'iUnfunny.{fileType}'))
                     break
