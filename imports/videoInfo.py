@@ -3,18 +3,28 @@ import shlex, json, datetime
 
 
 def getBitRate(file):
-    # Build synthetic video for testing:
-    ################################################################################
-    sp.run(shlex.split(f'ffmpeg -loglevel quiet -y -f lavfi -i testsrc=size=320x240:rate=30 -f lavfi -i sine=frequency=400 -f lavfi -i sine=frequency=1000 -filter_complex amerge -vcodec libx264 -crf 17 -pix_fmt yuv420p -acodec aac -ar 22050 -t 10 {file}'))
-    ################################################################################
+    # Use FFprobe to get bitrates
+    # Get the video bitrate
+    videoData = sp.run([
+                        "ffprobe", "-v", "0", "-select_streams",
+                        "v:0", "-show_entries", "stream=bit_rate",
+                        "-of", "compact=p=0:nk=1", file], stdout=sp.PIPE).stdout
+    videoDict = json.loads(videoData)  # Convert data from JSON string to dictionary
+    videoBitRate = int(videoDict)  # Get the bitrate.
+    
+    # Get the audio bitrate
+    audioData = sp.run([
+                        "ffprobe", "-v", "0", "-select_streams",
+                        "a:0", "-show_entries", "stream=bit_rate",
+                        "-of", "compact=p=0:nk=1", file], stdout=sp.PIPE).stdout
+    audioDict = json.loads(audioData)  # Convert data from JSON string to dictionary
+    audioBitRate = int(audioDict)  # Get the bitrate.
 
-    # Use FFprobe for 
-    # Execute ffprobe (to get specific stream entries), and get the output in JSON format
-    data = sp.run(shlex.split(f'ffprobe -loglevel quiet -v error -select_streams v:0 -show_entries stream=bit_rate -print_format json {file}'), stdout=sp.PIPE).stdout
-    dict = json.loads(data)  # Convert data from JSON string to dictionary
-    bit_rate = int(dict['streams'][0]['bit_rate'])  # Get the bitrate.
-
-    return f'bit_rate = {bit_rate}'
+    # Return both bitrates
+    return {
+        'videoBitrate':videoBitRate,
+        'audioBitrate':audioBitRate,
+    }
 
 def getLength(filename):
     result = sp.run(["ffprobe", "-v", "error", "-show_entries",
@@ -27,5 +37,8 @@ def getLength(filename):
 
 if __name__ == "__main__":
     videoLocation = input("Video file: ")
-    print(getBitRate(videoLocation.replace("\"", "")))
-    print(getLength(videoLocation.replace("\"", "")))
+    bitrates = getBitRate(videoLocation.replace("\"", ""))
+    videoLength = getLength(videoLocation.replace("\"", ""))
+    print(f'video: {bitrates["videoBitrate"]}')
+    print(f'audio: {bitrates["audioBitrate"]}')
+    print(f'Length: {videoLength}')
