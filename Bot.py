@@ -65,11 +65,11 @@ def dashVarLength(var:str):
         dashOutput+="-"
     return dashOutput
 
-def getFileType(imageLink:str):
+def getFileType(fileLink:str):
     """
     Gets the file type for a image link
     """
-    contentType = requests.head(imageLink).headers["Content-Type"]
+    contentType = requests.head(fileLink).headers["Content-Type"]
 
     return contentType.split("/",1)[1]
 #endregion
