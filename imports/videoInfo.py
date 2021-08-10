@@ -3,7 +3,13 @@ import shlex, json, datetime
 
 
 def getBitRate(file):
-    # Use FFprobe to get bitrates
+    """
+    Gets the video bit rate and returns it as a JSON
+    {
+        'videoBitrate':videoBitRate,
+        'audioBitrate':audioBitRate,
+    }
+    """
     # Get the video bitrate
     videoData = sp.run([
                         "ffprobe", "-v", "0", "-select_streams",
@@ -27,6 +33,9 @@ def getBitRate(file):
     }
 
 def getLength(filename):
+    """
+    Gives the length of the video in h:m:s
+    """
     result = sp.run(["ffprobe", "-v", "error", "-show_entries",
                              "format=duration", "-of",
                              "default=noprint_wrappers=1:nokey=1", filename],
@@ -36,6 +45,13 @@ def getLength(filename):
     return str(datetime.timedelta(seconds=videoLength))
 
 def getFPS(filename):
+    """
+    Gives FPS of video back as a json
+    {
+        'rawFPS':rawFPS,
+        'FPSFraction':FPSFraction,
+    }
+    """
     result = sp.run(f'ffprobe -v error -select_streams v -of default=noprint_wrappers=1:nokey=1 -show_entries stream=r_frame_rate "{filename}"',
         stdout=sp.PIPE,
         stderr=sp.STDOUT)
