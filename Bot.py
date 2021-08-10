@@ -329,6 +329,44 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
             else:
                 await ctx.reply("You must send a file.")
 
+    @commands.max_concurrency(1,per=commands.BucketType.default,wait=False)
+    @commands.command(aliases=["vinfo","vi"])
+    async def VideoInfo(self, ctx, Volume = 1000):
+        """Get info for a video"""
+        async with ctx.channel.typing():
+            if ctx.message.attachments:
+                video = requests.get(ctx.message.attachments[0].url).content
+                userDir = "tempfiles/" + str(ctx.message.author.id)
+                videoDir = userDir + ctx.message.attachments[0].filename
+        
+                with open(videoDir, "wb") as file:
+                    file.write(video)
+
+                bRate = videoInfo.getBitRate(videoDir)
+                length = videoInfo.getLength(videoDir)
+                FPSInfo = videoInfo.getFPS(videoDir)
+                #Remove the file as its not needed any more
+                os.remove(videoDir)
+
+
+                videoBitrate = "{:,}".format(bRate["videoBitrate"])
+                videoBitrate = f'{videoBitrate}[🛈](https://discord.com "{convert_bytes(bRate["videoBitrate"])}")'
+
+                audioBitrate = "{:,}".format(bRate["audioBitrate"])
+                audioBitrate = f'{audioBitrate}[🛈](https://discord.com "{convert_bytes(bRate["audioBitrate"])}")'
+
+                videoLength = f'length[🛈](https://discord.com "Fun fact: this can be changed by editing hex")'
+
+                FPS = f'{FPSInfo["rawFPS"]}[🛈](https://discord.com "Raw fraction: {FPSInfo["FPSFraction"]}")'
+
+                embed=discord.Embed(title="Video info", description=f'```fix\n{watermark}```', color=discord.Color.blurple())
+                embed.add_field(name="Video bitrate:", value=videoBitrate, inline=True)
+                embed.add_field(name="Audio bitrate:", value=audioBitrate, inline=True)
+                embed.add_field(name="Video length:", value=length, inline=True)
+                embed.add_field(name="FPS:", value=FPS, inline=True)
+                embed.set_footer(text="Made by Roblox Thot")
+                await ctx.reply(embed=embed)
+
     @commands.command(aliases=["br"])
     async def BitRate(self, ctx, videoBitrate:int = 10000, audioBitrate:int = None):
         """Change video's audio and visual bitrate"""
