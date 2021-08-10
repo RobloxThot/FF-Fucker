@@ -35,10 +35,23 @@ def getLength(filename):
     videoLength = round(float(result.stdout))
     return str(datetime.timedelta(seconds=videoLength))
 
+def getFPS(filename):
+    result = sp.run(f'ffprobe -v error -select_streams v -of default=noprint_wrappers=1:nokey=1 -show_entries stream=r_frame_rate "{filename}"',
+        stdout=sp.PIPE,
+        stderr=sp.STDOUT)
+    FPSFraction = result.stdout.decode("utf-8").replace("\r\n", "")
+    rawFPS = round(eval(FPSFraction),1)
+    return {
+        'rawFPS':rawFPS,
+        'FPSFraction':FPSFraction,
+    }
+
 if __name__ == "__main__":
     videoLocation = input("Video file: ")
     bitrates = getBitRate(videoLocation.replace("\"", ""))
     videoLength = getLength(videoLocation.replace("\"", ""))
+    FPS = getFPS(videoLocation.replace("\"", ""))
     print(f'video: {bitrates["videoBitrate"]}')
     print(f'audio: {bitrates["audioBitrate"]}')
     print(f'Length: {videoLength}')
+    print(f'FPS: {FPS}')
