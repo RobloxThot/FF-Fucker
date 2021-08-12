@@ -11,3 +11,6 @@ virus.*
 *.jpeg
 *.png
 *.wav
+
+# Ignore test files
+*test*
