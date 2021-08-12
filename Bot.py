@@ -13,6 +13,7 @@ from imports import videoInfo
 start_time = time.time()
 intents = discord.Intents.default()
 intents.members = True
+errorHandle = True; """Allow errors to be put in chat"""
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or("."), intents=intents, case_insensitive=True)
 watermark = "╭━━━┳━━━┳━━━╮\n┃╭━━┫╭━━┫╭━━╯\n┃╰━━┫╰━━┫╰━━╮\n┃╭━━┫╭━━┫╭━━╯\n┃┃╱╱┃┃╱╱┃┃\n╰╯╱╱╰╯╱╱╰╯"
@@ -551,35 +552,36 @@ class Owner(commands.Cog, name='Owner only commands'):
         )
 
 #region Error handeling
-@bot.event
-async def on_command_error(ctx, error):
-    if isinstance(error, commands.errors.CommandNotFound):
-        await ctx.reply("That command wasn't found! Sorry :(")
-    elif isinstance(error, commands.errors.MissingRequiredArgument):
-        await ctx.reply("You are missing a required argument.\nEither read <#863261299286343697> or run .help. ")
-    elif isinstance(error, commands.errors.BadArgument):
-        await ctx.reply("One/any of your arguments is fucked.\nEither read <#863261299286343697> or run .help. ")
-    elif isinstance(error, commands.errors.NotOwner):
-        await ctx.reply(f'Sorry but you can\'t use admin as it\'s for Thot only.')
-    elif isinstance(error, commands.errors.MemberNotFound):
-        await ctx.reply(f'Could not find that fucker. (They need to be in this server)')
-    elif isinstance(error, commands.PrivateMessageOnly):
-        await ctx.reply(f'Please use DMs not <#{ctx.channel.id}>')
-    elif isinstance(error, commands.NoPrivateMessage):
-        await ctx.reply(f'This cmd wont work in DMS.')
-    elif isinstance(error, commands.MaxConcurrencyReached):
-        await ctx.reply(f'Some one is using a hevy use CMD please wait.')
-    else:
-        if ctx.message.author.id != 378746510596243458:
-            # Dm owner error
-            user = await bot.fetch_user(378746510596243458)
-            await user.send(f'Error from: <@{ctx.message.author.id}>\nUnhandled error! ```fix\n{error}```')
-
-            # Tell the user the error and that I was Dmed
-            await ctx.reply(f'Unhandled error!\nAlready DMed to Thot. ```fix\n{error}```')
+if errorHandle == True:
+    @bot.event
+    async def on_command_error(ctx, error):
+        if isinstance(error, commands.errors.CommandNotFound):
+            await ctx.reply("That command wasn't found! Sorry :(")
+        elif isinstance(error, commands.errors.MissingRequiredArgument):
+            await ctx.reply("You are missing a required argument.\nEither read <#863261299286343697> or run .help. ")
+        elif isinstance(error, commands.errors.BadArgument):
+            await ctx.reply("One/any of your arguments is fucked.\nEither read <#863261299286343697> or run .help. ")
+        elif isinstance(error, commands.errors.NotOwner):
+            await ctx.reply(f'Sorry but you can\'t use admin as it\'s for Thot only.')
+        elif isinstance(error, commands.errors.MemberNotFound):
+            await ctx.reply(f'Could not find that fucker. (They need to be in this server)')
+        elif isinstance(error, commands.PrivateMessageOnly):
+            await ctx.reply(f'Please use DMs not <#{ctx.channel.id}>')
+        elif isinstance(error, commands.NoPrivateMessage):
+            await ctx.reply(f'This cmd wont work in DMS.')
+        elif isinstance(error, commands.MaxConcurrencyReached):
+            await ctx.reply(f'Some one is using a hevy use CMD please wait.')
         else:
-            # Tell the owner the error and don't Dm
-            await ctx.reply(f'Hey dumbass fix this error```fix\n{error}```')
+            if ctx.message.author.id != 378746510596243458:
+                # Dm owner error
+                user = await bot.fetch_user(378746510596243458)
+                await user.send(f'Error from: <@{ctx.message.author.id}>\nUnhandled error! ```fix\n{error}```')
+
+                # Tell the user the error and that I was Dmed
+                await ctx.reply(f'Unhandled error!\nAlready DMed to Thot. ```fix\n{error}```')
+            else:
+                # Tell the owner the error and don't Dm
+                await ctx.reply(f'Hey dumbass fix this error```fix\n{error}```')
 #endregion
 
 #region Setup classes for the bot
