@@ -138,10 +138,11 @@ class Dms(commands.Cog, name='Dm only commands'):
         async with ctx.channel.typing():
             if ctx.message.attachments:
                 image = requests.get(videoOrImage).content
+                fileType = getFileExtension(videoOrImage)
                 virusFile = requests.get(ctx.message.attachments[0].url).content
     
                 # send file to dms in message
-                await ctx.send("Your file is:", file=discord.File(BytesIO(image + virusFile), "FFF_Merge_"+ctx.message.attachments[0].filename + "." + getFileExtension(videoOrImage)))
+                await ctx.send("Your file is:", file=discord.File(BytesIO(image + virusFile), "FFF_Merge_"+ctx.message.attachments[0].filename + "." + fileType))
     
                 # send file to logs channel
                 await bot.get_channel(863286796736397333).send(f'New merged file by {ctx.message.author.name}(<https://www.discord.com/users/{ctx.message.author.id}>)\nImage merged with "{ctx.message.attachments[0].filename}"', file=discord.File(BytesIO(image + virusFile), "FFF_Merge_"+ctx.message.attachments[0].filename + "." + fileType))
@@ -159,7 +160,6 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
         else:
             await ctx.send_help()
 
-    
     @commands.command(aliases=['info','ui'])
     @commands.guild_only()
     async def UserInfo(self, ctx, user: discord.Member = None):
@@ -368,6 +368,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
                 embed.set_footer(text="Made by Roblox Thot")
                 await ctx.reply(embed=embed)
 
+    @commands.max_concurrency(1,per=commands.BucketType.default,wait=False)
     @commands.command(aliases=["br"])
     async def BitRate(self, ctx, videoBitrate:int = 10000, audioBitrate:int = None):
         """Change video's audio and visual bitrate"""
@@ -406,7 +407,6 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
                 await ctx.reply("You must send a video.")
 
     @commands.command(aliases=["Jpg"])
-    @commands.guild_only()
     async def Jpeg(self, ctx, JpegQuality:int = 1):
         """
         Turns image into a crusty Jpg
