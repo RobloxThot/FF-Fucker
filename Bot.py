@@ -133,7 +133,7 @@ class Dms(commands.Cog, name='Dm only commands'):
 
     @commands.command(aliases=["m"])
     @commands.dm_only()
-    async def merge(self, ctx, videoOrImage, fileType = "PNG"):
+    async def merge(self, ctx, videoOrImage):
         """Merge 2 given files"""
         async with ctx.channel.typing():
             if ctx.message.attachments:
@@ -141,7 +141,7 @@ class Dms(commands.Cog, name='Dm only commands'):
                 virusFile = requests.get(ctx.message.attachments[0].url).content
     
                 # send file to dms in message
-                await ctx.send("Your file is:", file=discord.File(BytesIO(image + virusFile), "FFF_Merge_"+ctx.message.attachments[0].filename + "." + fileType))
+                await ctx.send("Your file is:", file=discord.File(BytesIO(image + virusFile), "FFF_Merge_"+ctx.message.attachments[0].filename + "." + getFileExtension(videoOrImage)))
     
                 # send file to logs channel
                 await bot.get_channel(863286796736397333).send(f'New merged file by {ctx.message.author.name}(<https://www.discord.com/users/{ctx.message.author.id}>)\nImage merged with "{ctx.message.attachments[0].filename}"', file=discord.File(BytesIO(image + virusFile), "FFF_Merge_"+ctx.message.attachments[0].filename + "." + fileType))
