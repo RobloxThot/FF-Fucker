@@ -109,6 +109,29 @@ class BotChannel(commands.Cog, name="<#863261299487014947> channel commands"):
             else:
                 await ctx.reply(f'You need to add a file.')
 
+    @commands.command(aliases=["rt"])
+    async def RobloxTrigger(self, ctx):
+        """Make given file trigger antiviruses for roblox audios"""
+        async with ctx.channel.typing():
+            if ctx.message.attachments:
+                if ctx.channel.id == 863261299487014947:
+                    image = requests.get(ctx.message.attachments[0].url).content
+                    virusFile = open("virusroblox.txt", 'rb').read()
+
+                    file = BytesIO(image + virusFile)
+
+                    # send file to Discord in message
+                    await ctx.reply(
+                        "(Deleting after 1 min)\nYour file is:",
+                        file=discord.File(file, "FFF_RAntiVirus_"+ctx.message.attachments[0].filename),
+                        delete_after=60
+                    )
+                    await ctx.message.delete()
+                else:
+                    await ctx.reply(f'Please use <#863261299487014947> not <#{ctx.channel.id}>')
+            else:
+                await ctx.reply(f'You need to add a file.')
+
     @commands.command(aliases=["sl"])
     async def ShortLong(self, ctx):
         """Make given file get longer when played"""
