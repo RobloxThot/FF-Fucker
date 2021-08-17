@@ -175,6 +175,21 @@ class Dms(commands.Cog, name='Dm only commands'):
 class Misc(commands.Cog, name='Miscellaneous commands'):
     """Some useful/useless commands"""
 
+    @commands.command(aliases=["d"])
+    async def Download(self, ctx, link):
+        """
+        Currently broken.
+        Download Mp4s from YouTube
+        """
+        async with ctx.channel.typing():
+            statusMsg = await ctx.reply(f'Downloading video please wait!', mention_author=False)
+            YouTube(link).streams.first().download(output_path = "video", filename=str(ctx.message.author.id))
+            await statusMsg.edit(content=f'Sending video please wait!\nFile size: {file_size("video/" + str(ctx.message.author.id))}')
+            with open("video/" + str(ctx.message.author.id), "rb") as file:
+                await ctx.reply(f'Your file is:', file=discord.File(file, f'{YouTube(link).title}.mp4'))
+            await statusMsg.delete()
+            os.remove("video/" + str(ctx.message.author.id))
+
     @commands.command(aliases=['h'])
     async def Help(self, ctx, cmdToLookup = ""):
         """Lists commands dumbass"""
@@ -455,23 +470,7 @@ class Misc(commands.Cog, name='Miscellaneous commands'):
 
 class Owner(commands.Cog, name='Owner only commands'):
     """Commands only Admins can run"""
-
-    @ThotOnly()
-    @commands.command(aliases=["d"])
-    async def Download(self, ctx, link):
-        """
-        Currently broken.
-        Download Mp4s from YouTube
-        """
-        async with ctx.channel.typing():
-            statusMsg = await ctx.reply(f'Downloading video please wait!', mention_author=False)
-            YouTube(link).streams.first().download(output_path = "video", filename=str(ctx.message.author.id))
-            await statusMsg.edit(content=f'Sending video please wait!\nFile size: {file_size("video/" + str(ctx.message.author.id) + ".mp4")}')
-            with open("video/" + str(ctx.message.author.id) + ".mp4", "rb") as file:
-                await ctx.reply(f'Your file is:', file=discord.File(file, f'{YouTube(link).title}.mp4'))
-            await statusMsg.delete()
-            os.remove("video/" + str(ctx.message.author.id) + ".mp4")
-
+            
     @ThotOnly()
     @commands.command(aliases=["d3"])
     async def DownloadMp3(self, ctx, link):
@@ -482,11 +481,11 @@ class Owner(commands.Cog, name='Owner only commands'):
         async with ctx.channel.typing():
             statusMsg = await ctx.reply(f'Downloading audio please wait!', mention_author=False)
             YouTube(link).streams.filter(only_audio=True).first().download(output_path = "video", filename=str(ctx.message.author.id))
-            await statusMsg.edit(content=f'Sending audio please wait!\nFile size: {file_size("video/" + str(ctx.message.author.id) + ".mp4")}')
-            with open("video/" + str(ctx.message.author.id) + ".mp4", "rb") as file:
+            await statusMsg.edit(content=f'Sending audio please wait!\nFile size: {file_size("video/" + str(ctx.message.author.id))}')
+            with open("video/" + str(ctx.message.author.id), "rb") as file:
                 await ctx.reply(f'Your file is:', file=discord.File(file, f'{YouTube(link).title}.mp3'))
             await statusMsg.delete()
-            os.remove("video/" + str(ctx.message.author.id) + ".mp4")
+            os.remove("video/" + str(ctx.message.author.id))
 
     @commands.command(aliases=["tc"])
     @ThotOnly()
